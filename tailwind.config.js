@@ -4,7 +4,26 @@ module.exports = {
     "./src/**/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        light: {
+          "100": "#ffffff",
+          "200": "#eff2f7",
+          "300": "#d3dce6"
+        },
+        blue: {
+          "100": "#c5e5f3"
+        }
+      },
+      textColor: {
+        header: "#313131",
+        subHeader: "#616161",
+        body: "#333333"
+      },
+      fontFamily: {
+        sans: 'Noto Sans JP',
+      }
+    },
   },
   plugins: [],
 }
