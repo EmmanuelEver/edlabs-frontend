@@ -14,6 +14,9 @@ module.exports = {
         },
         blue: {
           "100": "#c5e5f3"
+        },
+        accentColor: {
+          "100": "#00d8d6"
         }
       },
       textColor: {
@@ -23,7 +26,7 @@ module.exports = {
       },
       fontFamily: {
         sans: 'Noto Sans JP',
-      }
+      },
     },
   },
   plugins: [],

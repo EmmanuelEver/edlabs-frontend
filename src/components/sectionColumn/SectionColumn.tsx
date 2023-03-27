@@ -15,7 +15,7 @@ interface IProps {
 const SectionColumn: FC<IProps> = ({ section }) => {
     return (
         <div className="mr-6 w-76 flex-shrink-0 flex flex-col">
-            <h3 className="text-sm font-bold uppercase text-subHeader  tracking-wider text-opacity-70 ml-6">{section.section}</h3>
+            <h3 className="text-sm font-medium uppercase text-subHeader  tracking-wider text-opacity-70 ml-6">{section.section} <span className="ml-0.5">({section.activites.length})</span></h3>
             <div className="mt-6 flex-1 overflow-y-auto">
                 <div className="w-full px-1.5 h-full overflow-y-auto flex flex-col gap-6">
                     {
