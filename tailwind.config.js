@@ -13,10 +13,18 @@ module.exports = {
           "400": "#f5f7fd"
         },
         blue: {
-          "100": "#c5e5f3"
+          "100": "#c5e5f3",
+          "200": "#828fa3"
         },
         accentColor: {
-          "100": "#00d8d6"
+          "100": "#00d8d6",
+          "200": "#e9e5dd"
+        },
+        dark: {
+          "100": "#000000",
+          header: "#313131",
+          subHeader: "#616161",
+          body: "#333333"
         }
       },
       textColor: {

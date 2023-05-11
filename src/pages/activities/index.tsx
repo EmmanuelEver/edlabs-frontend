@@ -9,7 +9,7 @@ type TProps = {
 }
 
 const ActivitiesPage: FC<TProps> = ({role}) => {
-  console.log(role)
+
   return (
     <MainLayout role={role} pageTitle="Activities">
         {

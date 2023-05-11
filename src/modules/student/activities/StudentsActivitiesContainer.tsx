@@ -1,17 +1,18 @@
-import { IActivitySummary } from "@/types/types";
+import { IActivitesBySection, IActivitySummary } from "@/types/types";
+import { useState } from "react";
 import StudentActivitiesView from "./StudentActivitiesView";
 
-export interface IActivitesBySection {
-  section: string;
-  readonly internal_id: string;
-  activites: IActivitySummary[]
-}
 
 interface IResponse {
   activities: IActivitesBySection[];
 }
 
 const ActivitiesContainer = () => {
+  const [showAddModal, setShowAddModal] = useState<boolean>(false)
+
+  function handleSetShowModal(val: boolean) {
+    setShowAddModal(val)
+  }
 
   const activities: IActivitesBySection[] = [
     {
@@ -36,7 +37,7 @@ const ActivitiesContainer = () => {
     }
   ]
   return (
-    <StudentActivitiesView activities={activities} />
+    <StudentActivitiesView showAddModal={showAddModal} handleSetShowModal={handleSetShowModal} activities={activities} />
   )
 }
 
