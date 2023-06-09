@@ -5,6 +5,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      zIndex: {
+        supermax  : 11000,
+        max       : 10000,
+        modal     : 9000, 
+        overlay   : 8000,
+        dropdown  : 7000,
+        header    : 6000,
+        footer    : 5000
+      },
       colors: {
         light: {
           "100": "#ffffff",

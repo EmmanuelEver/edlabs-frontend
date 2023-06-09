@@ -63,10 +63,10 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                                     <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="section-name">
                                         Section name*
                                     </label>
-                                    <input {...register("name", {required: "This field is required"})} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="section-name" type="text"/>
+                                    <input {...register("title", {required: "This field is required"})} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="section-title" type="text"/>
                                     {
-                                        !!errors?.name &&
-                                        <p className="text-xs text-red-500 absolute -bottom-4">{errors?.name?.message}</p>
+                                        !!errors?.title &&
+                                        <p className="text-xs text-red-500 absolute -bottom-4">{errors?.title?.message}</p>
                                     }
                                 </div>
                                 <div className="mb-5 relative">
@@ -91,7 +91,7 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                                 </div>
                                 <div>
                                     <label className="md:w-2/3 block text-gray-500 font-bold">
-                                        <input {...register("publish")} className="mr-2 leading-tight" type="checkbox"/>
+                                        <input {...register("isOnline")} className="mr-2 leading-tight" type="checkbox"/>
                                         <span className="text-sm">
                                             Publish after creating.
                                         </span>

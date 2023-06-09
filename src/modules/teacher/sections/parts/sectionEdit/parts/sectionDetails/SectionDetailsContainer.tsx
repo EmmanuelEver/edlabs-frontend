@@ -1,15 +1,42 @@
-import { useState } from "react"
+import { apiPrivate } from "@/services/axios"
+import { ITeacherSection } from "@/types/types"
+import { ChangeEvent, FC, useState } from "react"
+import { useSWRConfig } from "swr"
 import SectionDetailsView from "./SectionDetailsView"
 
-const SectionDetailsContainer = () => {
+interface IProps {
+  data: ITeacherSection | undefined
+}
+
+const SectionDetailsContainer: FC<IProps> = ({data}) => {
     const [showStudentList, setShowStudentList] = useState(false)
     const [activitiesList, setShowActivitiesList] = useState(false)
+    const [changingOnlineStatus, setChangingOnlineStatus] = useState(false)
+    const {mutate} = useSWRConfig()
+
+    async function handleOnlineChange(e: ChangeEvent<HTMLInputElement>) {
+      setChangingOnlineStatus(true)
+      try {
+        const resp = await apiPrivate.put(`/sections/${data?.id}`, JSON.stringify({isOnline: e.target.checked}))
+        await mutate(`/sections/${data?.id}`)
+        await mutate(`/sections`)
+        console.log(resp)
+        setChangingOnlineStatus(false)
+      } catch (error) {
+        console.log(error)
+        alert("Error occured while saving")
+        setChangingOnlineStatus(false)
+      }
+    }
   return (
     <SectionDetailsView 
         showStudentList={showStudentList}
         setShowStudentList={setShowStudentList}
         activitiesList={activitiesList}
+        data={data}
         setShowActivitiesList={setShowActivitiesList}
+        handleOnlineChange={handleOnlineChange}
+        changingOnlineStatus={changingOnlineStatus}
     />
   )
 }

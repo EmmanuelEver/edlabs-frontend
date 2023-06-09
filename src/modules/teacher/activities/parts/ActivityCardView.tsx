@@ -1,6 +1,10 @@
+
+import { FC } from "react";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat"
+dayjs.extend(localizedFormat)
 import ActivityCard from "@/components/cards/ActivityCard"
 import { IActivitySummary } from "@/types/types";
-import { FC } from "react";
 
 interface IProps {
     activity: IActivitySummary;
@@ -9,8 +13,8 @@ interface IProps {
 const ActivityCardView: FC<IProps> = ({activity}) => {
   return (
     <ActivityCard>
-        <h3 title={activity.activity_name} className="text-header text-base font-bold">{activity.activity_name}</h3>
-        <p className="mt-4 text-sm text-body"> <span className="font-bold text-subHeader ml-1">{activity.due_date}</span></p>
+        <h3 title={activity.title} className="text-header text-base font-bold">{activity.title}</h3>
+        <p className="mt-4 text-sm text-body"> <span className="font-bold text-subHeader ml-1">{dayjs(activity.closeDate).format("LLLL")}</span></p>
     </ActivityCard>
   )
 }

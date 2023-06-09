@@ -1,48 +1,61 @@
 import { ITeacherSection } from "@/types/types"
 import { FC } from "react"
-import { BookOpenIcon } from '@heroicons/react/24/solid'
+import { BookOpenIcon, TrashIcon } from '@heroicons/react/24/solid'
 import AvatarList from "@/components/avatar/AvatarList";
+import clsx from "clsx";
 
 interface IProps {
     section: ITeacherSection;
     handleSelectSection: (id:string) => void
+    oddRow: boolean;
 }
 
-const SectionRowView: FC <IProps> = ({section, handleSelectSection}) => {
+const SectionRowView: FC <IProps> = ({section, handleSelectSection, oddRow}) => {
   return (
-    <tr className="border-b border-light-300">
-        <td colSpan={3} className="pb-4 pt-4">
+    <tr className={clsx("border-b border-light-300", oddRow ? "bg-light-300 bg-opacity-50" : "bg-transparent")}>
+        <td colSpan={3} className="pb-4 pt-4 pl-4">
             <div className="flex items-center">
                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-accentColor-200">
                     <BookOpenIcon className="w-3 h-3" />
                 </div>
-                <div role="button" onClick={() => handleSelectSection(section.sectionCode)} className="text-base text-header ml-4 hover:underline cursor-pointer">
+                <div role="button" onClick={() => handleSelectSection(section.id)} className="text-sm font-medium text-header ml-4 hover:underline cursor-pointer">
                     {/* TODO: link to section */}
-                    {section.sectionName}
+                    {section.title}
                 </div>
             </div>
         </td>
         <td colSpan={2} className="pb-4 pt-4">
-            <div className="text-base text-subHeader">
-                {section.sectionCode}
+            <div className="text-sm font-medium text-header">
+                {section.shortcode}
+            </div>
+        </td>
+        <td colSpan={2} className="pb-4 pt-4">
+            <div className="text-sm font-medium text-header">
+                {section.accessCode}
             </div>
         </td>
         <td colSpan={2} className="pb-4 pt-4">
             <div className="flex flex-col items-start">
-                <p className="font-light tracking-widest   text-header text-base">{section.totalActivities}</p>
-                <p className="text-subHeader opacity-60 text-sm">Activities</p>
+                <p className="tracking-widest font-medium  text-subHeader text-sm">{section.activities.length}</p>
+                {/* <p className="text-subHeader opacity-60 text-sm">Activities</p> */}
             </div>
         </td>
-        <td colSpan={2} className="pb-4 pt-4">
+        <td colSpan={1} className="pb-4 pt-4">
             <div className="flex flex-col items-start">
-                <p className="font-light tracking-widest   text-header text-base">{section.totalStudents}</p>
-                <p className="text-subHeader opacity-60 text-sm">Students</p>
+                <p className="font-medium tracking-widest   text-subHeader text-sm">{section.students.length}</p>
+                {/* <p className="text-subHeader opacity-60 text-sm">Students</p> */}
             </div>
         </td>
         <td colSpan={3} className="pb-4 pt-4">
             <div className="">
-                <AvatarList userList={section.studentsInfo} maxUsers={5} />
+                <AvatarList userList={section?.students?.map(student => student.user)} maxUsers={5} />
             </div>
+        </td>
+        <td colSpan={2} className="pb-4 pt-4 text-sm font-medium">
+            {section.isOnline ? <span className="text-green-600">ONLINE</span>: <span className="text-subHeader">OFFLINE</span>}
+        </td>
+        <td colSpan={1} className="pb-4 pt-4">
+            <TrashIcon className="w-5 h-5 text-red-600 cursor-pointer hover:scale-105" />
         </td>
     </tr>
   )

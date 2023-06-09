@@ -1,15 +1,19 @@
+import { ITeacherSection } from '@/types/types';
 import { Disclosure, Transition } from '@headlessui/react'
 import { ChevronUpIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
-import { FC } from 'react'
+import { ChangeEvent, FC } from 'react'
 
 interface IProps {
     showStudentList: boolean;
     setShowStudentList: (val:boolean) => void;
     activitiesList: boolean;
     setShowActivitiesList: (val:boolean) => void;
+    data: ITeacherSection | undefined
+    handleOnlineChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    changingOnlineStatus: boolean;
 }
 
-const SectionDetailsView: FC<IProps> = ({showStudentList, setShowStudentList, activitiesList, setShowActivitiesList,}) => {
+const SectionDetailsView: FC<IProps> = ({showStudentList, setShowStudentList, activitiesList, setShowActivitiesList, data, handleOnlineChange, changingOnlineStatus}) => {
   return (
     <Disclosure defaultOpen>
       {
@@ -38,7 +42,7 @@ const SectionDetailsView: FC<IProps> = ({showStudentList, setShowStudentList, ac
                             <label className="block text-subHeader text-sm font-medium">
                             No. of students: 
                             </label>
-                            <p className='text-base font-semibold text-header ml-2'>20</p>
+                            <p className='text-base font-semibold text-header ml-2'>{data?.students.length}</p>
                             <button onClick={() => setShowStudentList(!showStudentList)} type="button" className="w-4 h-4 ml-2">
                                 {
                                     showStudentList ? 
@@ -55,7 +59,7 @@ const SectionDetailsView: FC<IProps> = ({showStudentList, setShowStudentList, ac
                             <label className="block text-subHeader text-sm font-medium">
                             No. of activities: 
                             </label>
-                            <p className='text-base font-semibold text-header ml-2'>3</p>
+                            <p className='text-base font-semibold text-header ml-2'>{data?.activities.length}</p>
                             <button onClick={() => setShowActivitiesList(!activitiesList)} type="button" className="w-4 h-4 ml-2">
                                 {
                                     activitiesList ? 
@@ -72,7 +76,7 @@ const SectionDetailsView: FC<IProps> = ({showStudentList, setShowStudentList, ac
                             <span className="text-sm leading-none">
                                 Active: 
                             </span>
-                            <input defaultChecked className="ml-2 leading-tight" type="checkbox"/>
+                            <input disabled={changingOnlineStatus} onChange={handleOnlineChange} checked={data?.isOnline} className="ml-2 leading-tight" type="checkbox"/>
                         </label>
                     </div>
                 </Disclosure.Panel>

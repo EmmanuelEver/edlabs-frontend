@@ -1,21 +1,23 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import StudentActivityContainer from "@/modules/student/activity/StudentActivityContainer";
 import TeacherSectionContainer from "@/modules/teacher/sections/TeacherSectionContainer";
-import { ROLES } from "@/types/types";
-import { FC } from "react";
+import useAppStore from "@/store/appStore";
 
-interface IProps{
-    role: ROLES;
-}
+const ActivityPage = () => {
+  const { user, isAuthenticating } = useAppStore((state) => ({
+      user: state.user,
+      isAuthenticating: state.isAuthenticating,
+      
+  }))
 
-const ActivityPage: FC<IProps> = ({role}) => {
   return (
-    <MainLayout role={role} pageTitle="Activity">
+    <MainLayout role={user?.role} pageTitle="Activity">
         {
-            role === "STUDENT" ?
+          !isAuthenticating &&
+            user?.role === "STUDENT" ?
                 <StudentActivityContainer />
             :
-            role === "TEACHER" ?
+            user?.role === "TEACHER" ?
                 <TeacherSectionContainer />
             :
             null
@@ -23,5 +25,6 @@ const ActivityPage: FC<IProps> = ({role}) => {
     </MainLayout>
   )
 }
+ActivityPage.isPrivate = true
 
 export default ActivityPage

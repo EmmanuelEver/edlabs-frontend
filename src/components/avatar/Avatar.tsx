@@ -4,7 +4,7 @@ import { FC } from "react"
 
 interface IProps {
     image?: string;
-    name: string;
+    name: string | undefined;
     wrapperClassName?: string;
 }
 

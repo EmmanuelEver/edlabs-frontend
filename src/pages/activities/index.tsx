@@ -1,22 +1,23 @@
-import { FC } from "react"
 import StudentsActivitiesContainer from "@/modules/student/activities/StudentsActivitiesContainer";
 import TeacherActivitiesContainer from "@/modules/teacher/activities/TeacherActivitiesContainer";
-import { ROLES } from "@/types/types";
 import MainLayout from "@/components/layouts/MainLayout";
+import useAppStore from "@/store/appStore";
 
-type TProps = {
-    role: ROLES;
-}
 
-const ActivitiesPage: FC<TProps> = ({role}) => {
+const ActivitiesPage = () => {
+  const { user, isAuthenticating } = useAppStore((state) => ({
+    user: state.user,
+    isAuthenticating: state.isAuthenticating,
 
+  }))
   return (
-    <MainLayout role={role} pageTitle="Activities">
+    <MainLayout role={user?.role} pageTitle="Activities">
         {
-            role === "STUDENT" ?
+          !isAuthenticating &&
+            user?.role === "STUDENT" ?
             <StudentsActivitiesContainer />
             :
-            role === "TEACHER" ?
+            user?.role === "TEACHER" ?
                 <TeacherActivitiesContainer />
             :
             null
@@ -24,5 +25,6 @@ const ActivitiesPage: FC<TProps> = ({role}) => {
     </MainLayout>
   )
 }
+ActivitiesPage.isPrivate = true
 
 export default ActivitiesPage

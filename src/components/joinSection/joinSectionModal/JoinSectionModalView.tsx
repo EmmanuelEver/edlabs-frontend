@@ -48,14 +48,14 @@ const JoinSectionModalView: FC<IProps> = ({show, onClose, handleSubmit, onSubmit
                             </Dialog.Title>
                             <div className="mt-2">
                                 <p className="text-sm text-gray-500">
-                                    Enter below the section you want to join. All request will be subject for approval by the section instructor.
+                                    Enter below the section you want to join. All request will be subject for approval by the section teacher.
                                 </p>
                             </div>
                             <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
                                 <input
                                     className="w-full py-1.5 pl-2 pr-1 h-9 placeholder:text-sm placeholder:font-light placeholder:leading-none border-light-300 rounded border"
-                                    placeholder="Enter section code here"
-                                    {...register("sectionCode")}
+                                    placeholder="Enter section access code here"
+                                    {...register("accessCode")}
                                 />
                                 <div className="mt-2 flex gap-2">
                                     <button

@@ -22,10 +22,18 @@ const StudentSectionsView: FC<IProps> = ({sections, activeSections}) => {
         </div>
         <div className="mt-6">
             <table className="w-full table-fixed">
+                <thead>
+                    <tr>
+                      <th colSpan={4} className='text-xs font-light text-left text-subHeader pb-2 pl-16'>TITLE</th>
+                      <th colSpan={2} className='text-xs font-light text-left text-subHeader pb-2'>SHORTCODE</th>
+                      <th colSpan={2} className='text-xs font-light text-left text-subHeader pb-2'>ACTIVITIES</th>
+                      <th colSpan={4} className='text-xs font-light text-left text-subHeader pb-2'>INSTRUCTOR</th>
+                    </tr>
+                </thead>
                 <tbody>
                 {
-                    sections.map(section => (
-                        <SectionRowView key={section.internal_id} section={section} />
+                    sections?.map((section, idx) => (
+                        <SectionRowView key={section.id} section={section} oddRow={idx%2 === 0}/>
                     ))
                 }
                 </tbody>

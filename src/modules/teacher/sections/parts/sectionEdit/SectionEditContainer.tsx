@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import SectionEditView from "./SectionEditView";
 import {useForm} from "react-hook-form";
+import useFetch from "@/hooks/useFetch";
+import { apiPrivate } from "@/services/axios";
 
 interface IProps {
     selectedSection: string;
@@ -9,7 +11,14 @@ interface IProps {
 
 const SectionEditContainer: FC<IProps> = ({selectedSection=""}) => {
     const router = useRouter()
-    const {register, reset, handleSubmit, formState: {isDirty, isSubmitting, errors}} = useForm()
+    const {data, revalidate} = useFetch(router.isReady ? `/sections/${router.query.selected}` : null);
+    const {register, reset, handleSubmit, formState: {isDirty, isSubmitting, errors, dirtyFields}} = useForm({
+      defaultValues: {
+        title: "",
+        shortcode: "",
+        description: ""
+      }
+    })
 
 
     function handleCloseModal() {
@@ -20,12 +29,37 @@ const SectionEditContainer: FC<IProps> = ({selectedSection=""}) => {
         }
     }
 
-    function onSubmit(val: any) {
-
+    async function onSubmit(val: any) {
+      
+      if(!data) return
+      const changedFieldKeys: string[] = Object.keys(dirtyFields)
+      const fieldsToSave: any = {}
+      changedFieldKeys.forEach((key) => {
+        fieldsToSave[key] = val[key]
+      })
+      try {
+        const resp = await apiPrivate.put(`/sections/${data.id}`, JSON.stringify({...fieldsToSave}))
+        await revalidate()
+        console.log(resp)
+      } catch (error) {
+        console.log(error)
+        alert("Error occured while saving")
+      }
     }
 
+    useEffect(() => {
+      if(data) {
+        reset({
+          title: data.title,
+          description: data.description,
+          shortcode: data.shortcode
+        }, {keepDirty: false, keepDirtyValues: false})
+      }
+    }, [data])
+
   return (
-    <SectionEditView 
+    <SectionEditView
+      data={data}
         handleCloseModal={handleCloseModal} 
         register={register}
         isDirty={isDirty}
@@ -33,7 +67,6 @@ const SectionEditContainer: FC<IProps> = ({selectedSection=""}) => {
         errors={errors}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
-
     />
   )
 }

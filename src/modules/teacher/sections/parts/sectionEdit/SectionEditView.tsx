@@ -1,8 +1,14 @@
+import { ITeacherSection } from '@/types/types';
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
+import clsx from 'clsx';
 import { FC, Fragment } from 'react'
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat"
+dayjs.extend(localizedFormat)
 import SectionDetailsContainer from './parts/sectionDetails/SectionDetailsContainer';
 import SectionDetailsView from './parts/sectionDetails/SectionDetailsView';
+import SectionStudentsContainer from './parts/sectionStudents/SectionStudentsContainer';
 
 interface IProps {
     handleCloseModal: () => void;
@@ -12,9 +18,10 @@ interface IProps {
     isDirty: boolean;
     isSubmitting: boolean;
     errors: any;
+    data: ITeacherSection | undefined
 }
 
-const SectionEditView: FC<IProps> = ({handleCloseModal, register, isDirty, isSubmitting, handleSubmit, onSubmit, errors}) => {
+const SectionEditView: FC<IProps> = ({handleCloseModal, register, isDirty, isSubmitting, handleSubmit, onSubmit, errors, data}) => {
   return (
     <Transition appear show={true} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => {}}>
@@ -52,15 +59,15 @@ const SectionEditView: FC<IProps> = ({handleCloseModal, register, isDirty, isSub
                     </button>
                   </Dialog.Title>
                     <div className='flex flex-nowrap items-start pb-6'>
-                        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 w-3/5">
+                        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 w-2/5">
                             <div className="mb-5 relative">
                                 <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="section-name">
                                     Section name*
                                 </label>
-                                <input {...register("name", {required: "This field is required"})} className="shadow appearance-none visited:border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="section-name" type="text"/>
+                                <input {...register("title", {required: "This field is required"})} className="shadow appearance-none visited:border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="section-title" type="text"/>
                                 {
-                                    !!errors?.name &&
-                                    <p className="text-xs text-red-500 absolute -bottom-4">{errors?.name?.message}</p>
+                                    !!errors?.title &&
+                                    <p className="text-xs text-red-500 absolute -bottom-4">{errors?.title?.message}</p>
                                 }
                             </div>
                             <div className="mb-5 relative">
@@ -87,7 +94,7 @@ const SectionEditView: FC<IProps> = ({handleCloseModal, register, isDirty, isSub
                                 <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="section-description">
                                     Section key
                                 </label>
-                                <input readOnly value="XuLqwghz" className="shadow appearance-none border rounded w-auto py-2 px-3 text-subHeader leading-tight focus:outline-none focus:shadow-outline bg-light-200" id="shortCode" type="text"/>
+                                <input readOnly value={data?.accessCode} className="shadow appearance-none border rounded w-auto py-2 px-3 text-subHeader leading-tight focus:outline-none focus:shadow-outline bg-light-200" id="shortCode" type="text"/>
                             </div>
                             <div className="mt-8 gap-2 flex">
                                 <button
@@ -100,19 +107,20 @@ const SectionEditView: FC<IProps> = ({handleCloseModal, register, isDirty, isSub
                                 <button
                                     type="submit"
                                     disabled={!isDirty || isSubmitting}
-                                    className="inline-flex w-20 justify-center rounded-md border border-transparent bg-dark-header px-4 py-2 text-sm font-medium text-light-100 hover:bg-accentColor-200 hover:text-header  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                    className={clsx("inline-flex w-20 justify-center rounded-md border border-transparent bg-dark-header px-4 py-2 text-sm font-medium text-light-100 hover:bg-accentColor-200 hover:text-header  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2", !isDirty || isSubmitting ? "opacity-50 pointer-events-none" : "")}
                                 >
                                     Update
                                 </button>
                             </div>
                         </form>
-                        <div className=" ml-6 mt-6 w-2/5">
+                        <div className=" ml-6 mt-6 w-3/5">
                             <div className="border-light-300 border rounded w-full">
-                                <SectionDetailsContainer />
+                                <SectionStudentsContainer sectionId={data?.id} blockedStudents={data?.blockedStudents} pendingStudents={data?.pendingStudents} students={data?.students} />
+                                <SectionDetailsContainer data={data} />
                             </div>
                             <div className="px-4 mt-4">
-                                <p className='text-xs text-subHeader mb-1'>Created March 19, 2023 at 11:35 PM</p>
-                                <p className='text-xs text-subHeader'>Updated May 9, 2023 at 2:00 PM</p>
+                                <p className='text-xs text-subHeader mb-1'>Created: <span className='text-dark-100 text-sm'>{dayjs(data?.createdAt).format("LLLL")}</span></p>
+                                <p className='text-xs text-subHeader'>Updated:  <span className='text-dark-100 text-sm'>{dayjs(data?.lastUpdated).format("LLLL")}</span></p>
                             </div>
                         </div>
                     </div>

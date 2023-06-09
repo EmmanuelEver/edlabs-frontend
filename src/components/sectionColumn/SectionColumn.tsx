@@ -11,7 +11,7 @@ interface IActivitesBySection {
 
 const SectionColumn: FC<PropsWithChildren> = ({ children }) => {
     return (
-        <div className="mr-6 w-76 flex-shrink-0 flex flex-col">
+        <div className="mr-6 w-72 flex-shrink-0 flex flex-col">
             {children}
         </div>
     )

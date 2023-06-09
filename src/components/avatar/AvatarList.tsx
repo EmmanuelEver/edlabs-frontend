@@ -8,12 +8,13 @@ interface IProps {
 }
 
 const AvatarList: FC<IProps> = ({userList, maxUsers=5}) => {
+    console.log({userList})
   return (
     <div className="flex flex-nowrap">
         {
             userList.slice(0, maxUsers).map((user, idx) => (
                 <div key={idx} style={{transform: `translateX(-${idx * 10}px)`}}>
-                    <Avatar key={idx} image={user.avatar} name={user.username} />
+                    <Avatar key={idx} image={user.profileUrl} name={user.name} />
                 </div>
             ))
         }

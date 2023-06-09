@@ -1,25 +1,26 @@
-import { useState } from "react"
+import { apiPrivate } from "@/services/axios";
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import CreateSectionView from "./CreateSectionView"
 
 export interface ICreateSectionForm {
-    name: string;
+    title: string;
     shortcode: string;
     description: string;
-    publish: boolean;
+    isOnline: boolean;
 }
 
 const defaultValues: ICreateSectionForm = {
-    name: "",
+    title: "",
     shortcode: "",
     description: "",
-    publish: true
+    isOnline: true
 }
 
 const CreateSectionContainer = () => {
     const [showCreateModal, setShowCreateModal] = useState(false)
 
-    const {register, handleSubmit, formState: {isSubmitting, isDirty, errors}} = useForm({
+    const {register, handleSubmit, reset, formState: {isSubmitting, isDirty, errors, isSubmitted}} = useForm({
         mode: "onBlur",
         shouldUnregister: true,
         defaultValues: {
@@ -29,8 +30,18 @@ const CreateSectionContainer = () => {
 
     function onSubmit(val: ICreateSectionForm) {
         //Todo: send data here to BE
+        try {
+            const resp = apiPrivate.post("/sections", JSON.stringify(val))
+            console.log(resp)
+        } catch (error) {
+            console.log(error)
+            alert("an error occured while saving")
+        }
     }
 
+    useEffect(() => {
+        reset()
+    }, [isSubmitted])
     
     return (
         <CreateSectionView 

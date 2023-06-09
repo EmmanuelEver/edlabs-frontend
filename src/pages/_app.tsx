@@ -1,8 +1,21 @@
+import SwrProvider from '@/context/providers/SwrProvider'
+import AuthGuard from '@/guards/AuthGuard'
 import '@/styles/globals.css'
-import { ROLES } from '@/types/types'
-import type { AppProps } from 'next/app'
 
-export default function App({ Component, pageProps }: AppProps) {
-  const role:ROLES = "TEACHER"
-  return <Component role={role} {...pageProps} />
+
+
+
+export default function App({ Component, pageProps }: any) {
+  return (
+      <SwrProvider>
+        {
+          Component.isPrivate ?
+          <AuthGuard>
+            <Component {...pageProps} />
+          </AuthGuard>
+          :
+          <Component {...pageProps} />
+        }
+      </SwrProvider>
+  )
 }
