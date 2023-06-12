@@ -20,16 +20,17 @@ const SectionActivitiesView: FC<IProps> = ({activities, sectionName, sectionId, 
   return (
     <SectionColumn>
       <div className="flex items-start justify-between px-6">
-        <h3 className="text-sm font-medium uppercase text-subHeader  tracking-wider text-opacity-70">{sectionName} <span className="ml-0.5">({activities.length})</span></h3>
-        <div className="w-6 h-6 ml-1">
-          <InformationCircleIcon role="button" title="Section Information" className="text-body cursor-pointer" />
-        </div>
+        <h3 title={sectionName} className="text-sm font-medium tracking-wider uppercase truncate text-subHeader text-opacity-70">{sectionName}</h3>
+        <div className="ml-0.5 text-sm">({activities.length})</div>
+        {/* <div className="w-6 h-6 ml-1">
+          <InformationCircleIcon role="button" title="Section Information" className="cursor-pointer text-body" />
+        </div> */}
       </div>
-      <div className="mt-6 flex-1 overflow-y-auto flex flex-col w-72">
-          <div className="w-full px-2 flex-shrink-0">
-            <button onClick={() => handleAddActivity(sectionId)} className="h-24 w-full hover:brightness-95 bg-light-200 flex items-center justify-center border border-dashed rounded border-blue-200">
-              <PlusIcon className="w-6 h-6 text-blue-200 -ml-2"/>
-              <span className="text-blue-200 font-bold ml-2">Add activity</span>
+      <div className="flex flex-col flex-1 mt-6 overflow-y-auto w-72">
+          <div className="flex-shrink-0 w-full px-2">
+            <button onClick={() => handleAddActivity(sectionId)} className="flex items-center justify-center w-full h-24 border border-blue-200 border-dashed rounded hover:brightness-95 bg-light-200">
+              <PlusIcon className="w-6 h-6 -ml-2 text-blue-200"/>
+              <span className="ml-2 font-bold text-blue-200">Add activity</span>
             </button>
           </div>
           <div className="w-full px-1.5 mt-4 flex-1 overflow-y-auto flex flex-col gap-4 ">
@@ -37,11 +38,11 @@ const SectionActivitiesView: FC<IProps> = ({activities, sectionName, sectionId, 
                   activities?.map(activity => (
                       <Link href={`/activities?selected=${activity.id}`} key={activity.id}>
                         <ActivityCard>
-                          <h3 title={activity.title} className="text-header text-base font-bold whitespace-normal">{activity.title}</h3>
-                          <p title={activity.shortDescription} className="mt-2 text-sm text-body w-full text-overflow-clamp">{activity.shortDescription}</p>
-                          <div className="mt-4 text-sm text-body flex items-center"> 
+                          <h3 title={activity.title} className="text-base font-bold whitespace-normal text-header">{activity.title}</h3>
+                          <p title={activity.shortDescription} className="w-full mt-2 text-sm text-body text-overflow-clamp">{activity.shortDescription}</p>
+                          <div className="flex items-center mt-4 text-sm text-body"> 
                             <CalendarDaysIcon className="w-5 h-5" />
-                            <p className="font-normal text-subHeader ml-1">{ dayjs(activity.createdAt).format("LLLL")}</p>
+                            <p className="ml-1 font-normal text-subHeader">{ dayjs(activity.createdAt).format("LLLL")}</p>
                           </div>
                         </ActivityCard>
                       </Link>

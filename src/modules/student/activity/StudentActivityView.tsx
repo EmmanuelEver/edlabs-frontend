@@ -1,3 +1,5 @@
+import LoadingScreen from "@/components/loader/LoadingScreen";
+import { IActivityFull } from "@/types/types";
 import { FC } from "react"
 import EditorView from "./parts/EditorView"
 import TerminalView from "./parts/TerminalView"
@@ -9,13 +11,15 @@ interface IProps {
   handleChange: (value:string, b:any) => void;
   handleRun: () => void;
   handleShowInstructions: () => void;
+  initializingActivity: boolean;
+  activityDetails: IActivityFull | undefined;
 }
 
-const StudentActivityView: FC<IProps> = ({terminalContent, handleClearTerminal, value, handleChange, handleRun, handleShowInstructions}) => {
+const StudentActivityView: FC<IProps> = ({terminalContent, handleClearTerminal, value, handleChange, handleRun, handleShowInstructions, initializingActivity, activityDetails}) => {
   return (
-    <div className="flex flex-nowrap w-full h-full">
+    <div className="flex w-full h-full flex-nowrap">
       <div className="w-1/2">
-        <EditorView handleShowInstructions={handleShowInstructions} value={value} handleChange={handleChange} handleRun={handleRun} />
+        <EditorView activityDetails={activityDetails} handleShowInstructions={handleShowInstructions} value={value} handleChange={handleChange} handleRun={handleRun} />
       </div>
       <div className="w-1/2">
         <TerminalView 
@@ -23,6 +27,9 @@ const StudentActivityView: FC<IProps> = ({terminalContent, handleClearTerminal, 
           handleClearTerminal={handleClearTerminal}
         />
       </div>
+      {
+        initializingActivity && <LoadingScreen text="Initializing Activity Session" />
+      }
     </div>
   )
 }

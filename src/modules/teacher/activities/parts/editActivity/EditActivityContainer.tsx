@@ -21,10 +21,13 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
       shortDescription: "",
       openDate: "",
       closeDate: "",
+      starterCode: ""
     },
     shouldUnregister: true
   });
+
   const {mutate} = useSWRConfig()
+
 
   function handleDescription(value:any) {
     if(value !== data?.description) setIsDescriptionChangedRef(true)
@@ -68,6 +71,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
       reset({
         title: data.title,
         shortDescription: data.shortDescription,
+        starterCode: data.starterCode,
         openDate: new Date(data.openDate).toISOString().split("T")[0],
         closeDate: new Date(data.closeDate).toISOString().split("T")[0],
       }, {keepDirty: false, keepDirtyValues: false})

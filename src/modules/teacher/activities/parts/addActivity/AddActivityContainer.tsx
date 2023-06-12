@@ -13,10 +13,11 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
   const [description, setDescription] = useState("")
   const {register, reset, handleSubmit, formState: {isSubmitting, isDirty, isSubmitSuccessful}} = useForm();
   const {mutate} = useSWRConfig()
+
   function handleDescription(value:any) {
     setDescription(value)
-
   }
+
   async function onSubmit(val:any) {
     if(!isDirty && !description) return 
     try {

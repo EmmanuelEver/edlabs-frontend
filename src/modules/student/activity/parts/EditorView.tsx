@@ -6,6 +6,8 @@ import {insertTab, indentLess} from '@codemirror/commands'
 import { FC } from 'react';
 import {tokyoNightDay} from '@uiw/codemirror-theme-tokyo-night-day'
 import { InformationCircleIcon } from '@heroicons/react/24/solid'
+import { IActivityFull } from '@/types/types';
+import ActivityDetails from '@/components/activityDetails/ActivityDetails';
 
 
 interface IProps {
@@ -13,20 +15,19 @@ interface IProps {
   value: string;
   handleChange: (value:string, b:any) => void;
   handleShowInstructions: () => void;
+  activityDetails: IActivityFull | undefined;
 }
 
-const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstructions}) => {
+const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstructions, activityDetails}) => {
   return (
-    <div className="w-full h-full flex flex-col border-light-300">
-         <div className="w-full flex-shrink-0 py-2.5 pl-2.5 pr-4 border-b border-light-300 flex justify-between items-center">
-            <div>
-              <button onClick={handleShowInstructions} title='Show instructions' className="w-10 h-10 flex items-center justify-center rounded-full bg-accentColor-200">
-                  <InformationCircleIcon className="w-7 h-7 fill-dark-header" />
-              </button>
-              <h3 className="text-subHeader text-base"></h3>
+    <div className="flex flex-col w-full h-full border-light-300">
+         <div className="w-full flex-shrink-0 py-2.5 pl-6 pr-4 border-b border-light-300 flex justify-between items-center">
+            <div className='flex-1'>
+              <h3 title={activityDetails?.title} className="mr-4 text-base truncate text-subHeader">{activityDetails?.title}</h3>
             </div>
-            <div className="">
-                <button onClick={handleRun} className="border-light-300 text-light-100 bg-dark-header hover:bg-dark-subHeader border rounded py-1.5 px-4">
+            <div className="flex items-center flex-shrink-0 gap-2">
+                <ActivityDetails details={activityDetails} />
+                <button onClick={handleRun} className="border-dark-header text-light-100 bg-dark-header hover:bg-dark-subHeader border rounded py-1.5 px-4">
                     Run
                 </button>
             </div>

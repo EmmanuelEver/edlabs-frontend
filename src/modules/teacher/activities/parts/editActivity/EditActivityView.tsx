@@ -25,7 +25,6 @@ interface IProps {
 
 const myModules = {
   toolbar: [
-    [{ 'header': [1, 2, false] }],
     ['bold', 'italic', 'underline','strike', 'blockquote'],
     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
     ['link', "code"],
@@ -52,7 +51,7 @@ const ActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descript
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -62,50 +61,58 @@ const ActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descript
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className=" max-w-6xl w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-6xl px-6 py-3 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                   <Dialog.Title
                     as="div"
-                    className="flex justify-between items-center"
+                    className="flex items-center justify-between"
                   >
                     <h3 className="text-lg font-medium leading-6 text-header">Edit activity</h3>
                     <button onClick={handleCloseModal} className="w-6 h-6">
                         <XMarkIcon className="text-header" />
                     </button>
                   </Dialog.Title>
-                  <div className="mt-4 flex flex-nowrap w-full">
+                  <div className="flex w-full mt-4 flex-nowrap">
                     <form className="w-3/5" onSubmit={handleSubmit(onSubmit)}>
-                        <input {...register("title", { required: "This field is required."})} className="text-header placeholder:font-normal font-medium text-xl w-full pl-4 py-2.5" placeholder="Activity name" />
-                        <input {...register("shortDescription", { required: "This field is required."})} className="mb-6 text-header placeholder:font-normal font-medium text-base w-full pl-4 py-2.5" placeholder="Short description" />
-                        <div className="mb-5 relative pl-4">
-                            <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="openDate">
+                        <input {...register("title", { required: "This field is required."})} className="text-header placeholder:font-normal font-medium text-xl w-full pl-4 py-1.5" placeholder="Activity name" />
+                        <input {...register("shortDescription", { required: "This field is required."})} className="w-full py-1 pl-4 mb-3 text-base font-medium text-header placeholder:font-normal" placeholder="Short description" />
+                        <div className="relative pl-4 mb-3">
+                            <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="openDate">
                                 Date open
                             </label>
-                            <input {...register("openDate", { required: "This field is required."})} type="date" id="openDate" defaultValue={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} min={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} className="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                            <input {...register("openDate", { required: "This field is required."})} type="date" id="openDate" defaultValue={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} min={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} className="w-auto px-3 py-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
                         </div>
-                        <div className="mb-5 relative pl-4">
-                            <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="expiredDate">
+                        <div className="relative pl-4 mb-3">
+                            <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="expiredDate">
                                 Date expires
                             </label>
                             {
                               data && data.closeDate ?
-                              <input {...register("closeDate", {shouldUnregister: true})} type="date" id="expiredDate" className="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" defaultValue={new Date(data?.closeDate || new Date()).toISOString().split("T")[0]} min={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} />
+                              <input {...register("closeDate", {shouldUnregister: true})} type="date" id="expiredDate" className="w-auto px-3 py-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" defaultValue={new Date(data?.closeDate || new Date()).toISOString().split("T")[0]} min={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} />
                               :
-                              <input {...register("closeDate", {shouldUnregister: true})} type="date" id="expiredDate" className="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" min={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} />
+                              <input {...register("closeDate", {shouldUnregister: true})} type="date" id="expiredDate" className="w-auto px-3 py-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" min={new Date(data?.openDate || new Date()).toISOString().split("T")[0]} />
                             }
                         </div>
-                        <div className="mb-5 relative pl-4">
-                            <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="expiredDate">
+                        <div className="relative pl-4 mb-3">
+                            <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="expiredDate">
                                 Description
                             </label>
-                            <div id="newActivity-description" className="relative h-56 max-h-72">
+                            <div id="newActivity-description" className="relative h-36 max-h-72">
                               <ReactQuill modules={myModules} value={description} onChange={handleDescription} />
                             </div>
                         </div>
-                        <div className="mt-8 gap-2 flex pl-4">
+                        <div className="relative pl-4 mb-3">
+                          <label className="block mb-1 text-sm font-medium text-subHeader" htmlFor="expiredDate">
+                              Starter code
+                          </label>
+                          <div id="newActivity-starterCode" className="relative h-28 max-h-36">
+                              <textarea {...register("starterCode", {shouldUnregister: true})} className="w-full h-full px-2 py-1 font-mono text-sm border rounded resize-none border-light-300" />
+                          </div>
+                        </div>
+                        <div className="flex gap-2 pl-4 mt-8">
                             <button
                               disabled={isSubmitting}
                               type="button"
-                              className="inline-flex w-32 justify-center rounded-md border bg-transparent border-dark-header px-4 py-2 text-sm font-medium text-header hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              className="inline-flex justify-center w-32 px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-dark-header text-header hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                               onClick={handleCloseModal}
                             >
                               Cancel
@@ -119,14 +126,14 @@ const ActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descript
                             </button>
                         </div>
                     </form>
-                    <div className=" ml-6 w-2/5">
-                      <div className=" mt-6 w-full">
-                          <div className="border-light-300 border rounded w-full">
+                    <div className="w-2/5 ml-6 ">
+                      <div className="w-full mt-6 ">
+                          <div className="w-full border rounded border-light-300">
                               <ActivityDetailsContainer data={data} />
                           </div>
                           <div className="px-4 mt-4">
-                              <p className='text-xs text-subHeader mb-1'>Created: <span className='text-dark-100 text-sm ml-2'>{dayjs(data?.createdAt).format("LLLL")} </span></p>
-                              <p className='text-xs text-subHeader'>Updated: <span className='text-dark-100 text-sm ml-2'>{dayjs(data?.lastUpdated).format("LLLL")}</span></p>
+                              <p className='mb-1 text-xs text-subHeader'>Created: <span className='ml-2 text-sm text-dark-100'>{dayjs(data?.createdAt).format("LLLL")} </span></p>
+                              <p className='text-xs text-subHeader'>Updated: <span className='ml-2 text-sm text-dark-100'>{dayjs(data?.lastUpdated).format("LLLL")}</span></p>
                           </div>
                       </div>
                     </div>

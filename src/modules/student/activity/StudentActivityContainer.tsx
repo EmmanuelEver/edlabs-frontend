@@ -1,4 +1,7 @@
-import { useState } from "react"
+import useFetch from "@/hooks/useFetch"
+import { apiPrivate } from "@/services/axios"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import StudentActivityView from "./StudentActivityView"
 
 const initialCode = `
@@ -20,15 +23,25 @@ const initialCode = `
 `
 
 const StudentActivityContainer = () => {
+    const router = useRouter()
+    const {data, isLoading} = useFetch(router.isReady && router.query.activityId ? `/activity-session?activityId=${router.query.activityId}` : null)
+    const {data:activity, isLoading: loadingActivity} = useFetch(router.isReady && router.query.activityId ? `/activities/${router.query.activityId}` : null)
     const [terminalContent, setTerminalContent] = useState("")
-    const [value, setValue] = useState(initialCode)
+    const [value, setValue] = useState("")
     
     function handleClearTerminal() {
 
     }
 
-    function handleRun() {
-
+    async function handleRun() {
+        if(activity && "id" in activity) {
+            try {
+                const resp = await apiPrivate.post("/compilations/student", JSON.stringify({codeValue: value, activitySessionId: data.id}))
+                setTerminalContent(resp?.data?.result || resp?.data?.message)
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 
     function handleChange(editorValue:string, b:any) {
@@ -39,14 +52,22 @@ const StudentActivityContainer = () => {
 
     }
     
+    useEffect(() => {
+        if(data && data?.answerValue) {
+            setValue(data.answerValue)
+        }
+    }, [data])
+
     return (
-        <StudentActivityView 
+        <StudentActivityView
+            activityDetails={activity}
             value={value} 
             handleChange={handleChange}
             handleRun={handleRun} 
             terminalContent={terminalContent} 
             handleClearTerminal={handleClearTerminal}
             handleShowInstructions={handleShowInstructions}
+            initializingActivity={isLoading || loadingActivity}
         />
     )
 }

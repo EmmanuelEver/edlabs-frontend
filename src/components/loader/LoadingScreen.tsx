@@ -1,7 +1,7 @@
 
-const LoadingScreen = () => {
+const LoadingScreen = ({text=""}) => {
     return (
-        <div className='fixed bg-dark-header top-0 left-0 w-screen h-screen z-supermax flex items-center justify-center'>
+        <div className='fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-dark-header z-supermax'>
             <div className="flex flex-col items-center">
                 <svg
                     className="origin-center translate-x-5"
@@ -27,8 +27,10 @@ const LoadingScreen = () => {
                         ></path>
                     </g>
                 </svg>
-                <p className="text-light-100 text-base mt-4">
-                    Initializing app
+                <p className="mt-4 text-base text-light-100">
+                    {
+                        text ? text : "Initializing app"
+                    }
                 </p>
             </div>
         </div>

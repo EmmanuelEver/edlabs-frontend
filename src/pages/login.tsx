@@ -65,13 +65,13 @@ const LoginPage = () => {
             loadingScreen &&
                 <LoadingScreen />
         }
-        <div className="w-screen min-h-screen overflow-hidden flex items-stretch flex-nowrap bg-light-200">
-                    <div className="w-1/2 bg-blue-100 flex items-center justify-center">
+        <div className="flex items-stretch w-screen min-h-screen overflow-hidden flex-nowrap bg-light-200">
+                    <div className="flex items-center justify-center w-1/2 bg-blue-100">
                         <Image src="/images/logo-full-transparent.png" alt="" width={550} height={350} />
                     </div>
-                    <div className="flex flex-col items-center justify-center px-20 w-1/2">
-                        <h1 className="text-3xl text-header font-sans font-medium text-center">Sign in</h1>
-                        <p className="text-body text-base mt-4 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div className="flex flex-col items-center justify-center w-1/2 px-20">
+                        <h1 className="font-sans text-3xl font-medium text-center text-header">Sign in</h1>
+                        <p className="mt-4 text-sm text-center text-body">Have problem Signing in? please refresh the page <br/> or message us at <a className="font-medium" href="mailmailto:edlabs2022@gmail.com">edlabs2022@gmail.com</a></p>
                         <div id="googleSignIn" className={clsx("mt-8 max-w-xs w-full")}>
                             {/* <button className="flex items-center w-full justify-center rounded shadow py-2.5 px-5 hover:bg-light-300 transition-all active:scale-95">
                                 <span className="font-light text-body text-sm mr-2.5">Sign in with Google </span>

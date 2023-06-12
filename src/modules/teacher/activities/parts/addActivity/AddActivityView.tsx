@@ -19,14 +19,12 @@ interface IProps {
 
 const myModules = {
   toolbar: [
-    [{ 'header': [1, 2, false] }],
     ['bold', 'italic', 'underline','strike', 'blockquote'],
     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
     ['link', "code"],
     ['clean']
   ],
 }
-
 
 const AddActivityView: FC<IProps> = ({handleCloseModal, handleDescription, description, register, handleSubmit, onSubmit, isSubmitting, isDirty}) => {
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }),[]);
@@ -47,7 +45,7 @@ const AddActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descr
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -57,51 +55,59 @@ const AddActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descr
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className=" max-w-4xl w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-4xl px-6 py-3 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                   <Dialog.Title
                     as="div"
-                    className="flex justify-between items-center"
+                    className="flex items-center justify-between"
                   >
-                    <h3 className="text-lg font-medium leading-6 text-header">New activity</h3>
+                    <h3 className="pl-2 text-lg font-medium leading-6 text-header">New activity</h3>
                     <button onClick={handleCloseModal} className="w-6 h-6">
                         <XMarkIcon className="text-header" />
                     </button>
                   </Dialog.Title>
-                  <div className="mt-4">
+                  <div className="mt-2">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <input {...register("title", { required: "This field is required."})} className="text-header placeholder:font-normal font-medium text-xl w-full pl-4 py-2.5" placeholder="Activity name" />
-                        <input {...register("shortDescription", { required: "This field is required."})} className="mb-6 text-header placeholder:font-normal font-medium text-base w-full pl-4 py-2.5" placeholder="Short description" />
-                        <div className="mb-5 relative pl-4">
-                            <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="openDate">
+                        <input {...register("title", { required: "This field is required."})} className="text-header placeholder:font-normal font-medium text-xl w-full py-1.5 pl-2" placeholder="Activity name" />
+                        <input {...register("shortDescription", { required: "This field is required."})} className="w-full py-1 pl-2 mb-3 text-base font-medium text-header placeholder:font-normal" placeholder="Short description" />
+                        <div className="relative pl-2 mb-3">
+                            <label className="block mb-1 text-sm font-medium text-subHeader" htmlFor="openDate">
                                 Date open
                             </label>
-                            <input {...register("openDate", { required: "This field is required."})} type="date" id="openDate" defaultValue={new Date().toISOString().split("T")[0]} min={new Date().toISOString().split("T")[0]} className="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                            <input {...register("openDate", { required: "This field is required."})} type="date" id="openDate" defaultValue={new Date().toISOString().split("T")[0]} min={new Date().toISOString().split("T")[0]} className="w-auto px-3 py-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
                         </div>
-                        <div className="mb-5 relative pl-4">
-                            <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="closeDate">
+                        <div className="relative pl-2 mb-3">
+                            <label className="block mb-1 text-sm font-medium text-subHeader" htmlFor="closeDate">
                                 Date expires (optional)
                             </label>
-                            <input {...register("closeDate")} type="date" id="closeDate" min={new Date().toISOString().split("T")[0]} className="shadow appearance-none border rounded w-auto py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                            <input {...register("closeDate")} type="date" id="closeDate" min={new Date().toISOString().split("T")[0]} className="w-auto px-3 py-1 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
                         </div>
-                        <div className="mb-5 relative pl-4">
-                            <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="expiredDate">
+                        <div className="relative pl-2 mb-3">
+                            <label className="block mb-1 text-sm font-medium text-subHeader" htmlFor="expiredDate">
                                 Description
                             </label>
-                            <div id="newActivity-description" className="relative h-56 max-h-72">
+                            <div id="newActivity-description" className="relative h-36 max-h-72">
                               <ReactQuill modules={myModules} value={description} onChange={handleDescription} />
                             </div>
                         </div>
-                        <div className="mb-5 relative pl-4">
+                        <div className="relative pl-2 mb-3">
+                          <label className="block mb-1 text-sm font-medium text-subHeader" htmlFor="expiredDate">
+                              Starter code
+                          </label>
+                          <div id="newActivity-starterCode" className="relative h-28 max-h-36">
+                              <textarea {...register("starterCode", {shouldUnregister: true})} className="w-full h-full px-2 py-1 font-mono text-sm border rounded resize-none border-light-300" />
+                          </div>
+                        </div>
+                        <div className="relative pl-2 mb-3">
                           <label className="relative inline-flex items-center cursor-pointer">
                             <input {...register("isOnline")} type="checkbox" defaultChecked className="sr-only peer"/>
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                            <span className="ml-3 text-subHeader text-sm font-medium">Publish online</span>
+                            <span className="ml-3 text-sm font-medium text-subHeader">Publish online</span>
                           </label>
                         </div>
-                        <div className="mt-8 gap-2 flex">
+                        <div className="flex gap-2 pl-2 mt-8">
                             <button
                               type="button"
-                              className="inline-flex w-20 justify-center rounded-md border bg-transparent border-dark-header px-4 py-2 text-sm font-medium text-header hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              className="inline-flex justify-center w-20 px-4 py-2 text-sm font-medium bg-transparent border rounded-md border-dark-header text-header hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                               onClick={handleCloseModal}
                             >
                             Cancel
@@ -109,7 +115,7 @@ const AddActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descr
                             <button
                                 disabled={!isDirty && !description}
                                 type="submit"
-                                className="inline-flex w-20 justify-center rounded-md border border-transparent bg-dark-header px-4 py-2 text-sm font-medium text-light-100 hover:bg-accentColor-200 hover:text-header  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                className="inline-flex justify-center w-20 px-4 py-2 text-sm font-medium border border-transparent rounded-md bg-dark-header text-light-100 hover:bg-accentColor-200 hover:text-header focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                             >
                                 Create
                             </button>

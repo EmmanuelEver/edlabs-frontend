@@ -26,6 +26,7 @@ export interface IActivityFull {
     openDate: string;
     submitCount: number;
     createdAt: string;
+    starterCode: string;
     lastUpdated: string;
     shortDescription: string;
     description: string;
@@ -37,6 +38,7 @@ export interface IActivityFull {
 export interface IActivitesBySection {
     title: string;
     readonly id: string;
+    shortcode: string;
     activities: Array<IActivitySummary | IActivityFull>
   }
   
