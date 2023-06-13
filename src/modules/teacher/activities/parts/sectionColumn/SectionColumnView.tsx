@@ -2,7 +2,7 @@ import SectionColumn from "@/components/sectionColumn/SectionColumn";
 import { IActivitySummary } from "@/types/types"
 import { FC } from "react"
 import Link from "next/link";
-import { InformationCircleIcon, PlusIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
+import { DocumentDuplicateIcon, PlusIcon, CalendarDaysIcon } from '@heroicons/react/24/solid';
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat"
 dayjs.extend(localizedFormat)
@@ -10,7 +10,7 @@ import ActivityCard from "@/components/cards/ActivityCard";
 
 
 interface IProps {
-  activities: IActivitySummary[];
+  activities: any[];
   sectionName: string;
   sectionId: string;
   handleAddActivity: (sectionId: string) => void
@@ -40,10 +40,17 @@ const SectionActivitiesView: FC<IProps> = ({activities, sectionName, sectionId, 
                         <ActivityCard>
                           <h3 title={activity.title} className="text-base font-bold whitespace-normal text-header">{activity.title}</h3>
                           <p title={activity.shortDescription} className="w-full mt-2 text-sm text-body text-overflow-clamp">{activity.shortDescription}</p>
-                          <div className="flex items-center mt-4 text-sm text-body"> 
+                          {/* <div className="flex items-center mt-4 text-sm text-body"> 
                             <CalendarDaysIcon className="w-5 h-5" />
-                            <p className="ml-1 font-normal text-subHeader">{ dayjs(activity.createdAt).format("LLLL")}</p>
-                          </div>
+                            <p className="ml-1 font-medium text-header">{ dayjs(activity.createdAt).format("LLLL")}</p>
+                          </div> */}
+                          {
+                            activity?.sessions.length > 0 &&
+                            <div className="flex items-center mt-4 text-sm text-body"> 
+                              <DocumentDuplicateIcon className="w-5 h-5" />
+                              <Link href={`/outputs/activity?activity=${activity.id}`} className="ml-1 font-medium hover:underline text-header">View student outputs</Link>
+                            </div>
+                          }
                         </ActivityCard>
                       </Link>
                   ))

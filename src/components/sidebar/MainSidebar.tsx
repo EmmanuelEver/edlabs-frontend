@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, PropsWithChildren, useState } from "react"
-import { HomeIcon, ClipboardDocumentListIcon, RectangleGroupIcon, CommandLineIcon } from '@heroicons/react/24/solid'
+import { HomeIcon, ClipboardDocumentListIcon, RectangleGroupIcon, CommandLineIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import { useRouter } from "next/router";
 
 interface IProps extends PropsWithChildren {
@@ -65,6 +65,23 @@ const MainSidebar: FC<IProps> = ({role}) => {
                         </div>
                     </Link>
                 </li>
+                {
+                    role === "TEACHER" &&
+                    <li className="w-full mb-3">
+                        <Link href="/outputs" >
+                            <div className={clsx("w-full py-2 flex items-center", router.pathname  === "/outputs" ? "bg-dark-header text-light-100": "bg-transparent text-blue-200", hovered ? "rounded justify-start pl-4" : "justify-center")}>
+                                <div className="w-7 h-7">
+                                    <UserGroupIcon />
+                                </div>
+                                {
+                                    hovered &&  <div className="ml-4 font-medium">
+                                                    Outputs
+                                                </div>
+                                }
+                            </div>
+                        </Link>
+                    </li>
+                }
                 {
                     role === "TEACHER" &&
                     <li className="w-full mb-3">

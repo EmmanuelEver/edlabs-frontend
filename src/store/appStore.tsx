@@ -13,8 +13,8 @@ interface AppState {
 const initialUser: User = {
     name: "",
     email: "",
-    picture: "",
-    role: "DEFAULT"
+    profileUrl: "",
+    role: "STUDENT"
 }
 
 

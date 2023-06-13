@@ -17,6 +17,7 @@ export interface IActivitySummary {
     closeDate: string;
     createdAt: string;
     shortDescription: string;
+    sessions: any[]; 
 }
 
 export interface IActivityFull {
@@ -39,7 +40,7 @@ export interface IActivitesBySection {
     title: string;
     readonly id: string;
     shortcode: string;
-    activities: Array<IActivitySummary | IActivityFull>
+    activities: any;
   }
   
 
