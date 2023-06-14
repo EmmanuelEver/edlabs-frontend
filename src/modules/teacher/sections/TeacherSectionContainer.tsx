@@ -61,7 +61,7 @@ import TeacherSectionView from "./TeacherSectionView"
 const TeacherSectionContainer = () => {
 
   const router = useRouter()
-  const {data} = useFetch("/sections");
+  const {data, isLoading} = useFetch("/sections");
 
   function handleSelectSection(id: string) {
     router.push({
@@ -77,6 +77,7 @@ const TeacherSectionContainer = () => {
       selectedSection={router?.isReady ? router?.query?.selected : ""}
       activeSections={data ? data?.filter((item:ITeacherSection) => item.isOnline).length : 0}
       handleSelectSection={handleSelectSection}
+      isLoading={isLoading}
     />
   )
 }

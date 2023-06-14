@@ -37,7 +37,7 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                 </Transition.Child>
 
             <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <div className="flex items-center justify-center min-h-full p-4 text-center">
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -47,7 +47,7 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                     leaveFrom="opacity-100 scale-100"
                     leaveTo="opacity-0 scale-95"
                 >
-                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                     <Dialog.Title
                         as="div"
                         className="flex items-center justify-between"
@@ -59,48 +59,49 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                     </Dialog.Title>
                         <div className="mt-7">
                             <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className="mb-5 relative">
-                                    <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="section-name">
+                                <div className="relative mb-5">
+                                    <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="section-name">
                                         Section name*
                                     </label>
-                                    <input {...register("title", {required: "This field is required"})} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="section-title" type="text"/>
+                                    <input {...register("title", {required: "This field is required"})} className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="section-title" type="text"/>
                                     {
                                         !!errors?.title &&
-                                        <p className="text-xs text-red-500 absolute -bottom-4">{errors?.title?.message}</p>
+                                        <p className="absolute text-xs text-red-500 -bottom-4">{errors?.title?.message}</p>
                                     }
                                 </div>
-                                <div className="mb-5 relative">
-                                    <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="shortCode">
+                                <div className="relative mb-5">
+                                    <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="shortCode">
                                         Shortcode*
                                     </label>
-                                    <input {...register("shortcode", {required: "This field is required"})} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="shortCode" type="text"/>
+                                    <input {...register("shortcode", {required: "This field is required"})} className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="shortCode" type="text"/>
                                     {
                                         !!errors?.shortcode &&
-                                        <p className="text-xs text-red-500 absolute -bottom-4">{errors?.shortcode?.message}</p>
+                                        <p className="absolute text-xs text-red-500 -bottom-4">{errors?.shortcode?.message}</p>
                                     }
                                 </div>
-                                <div className="mb-5 relative">
-                                    <label className="block text-subHeader text-sm font-medium mb-2" htmlFor="section-description">
+                                <div className="relative mb-5">
+                                    <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="section-description">
                                         Section description*
                                     </label>
-                                    <textarea {...register("description", {required: "This field is required"})} className="resize-none h-20  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="section-description" placeholder="Add a description..."/>
+                                    <textarea {...register("description", {required: "This field is required"})} className="w-full h-20 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none resize-none focus:outline-none focus:shadow-outline" id="section-description" placeholder="Add a description..."/>
                                     {
                                         !!errors?.description &&
-                                        <p className="text-xs text-red-500 absolute -bottom-4">{errors?.description?.message}</p>
+                                        <p className="absolute text-xs text-red-500 -bottom-4">{errors?.description?.message}</p>
                                     }
                                 </div>
                                 <div>
-                                    <label className="md:w-2/3 block text-gray-500 font-bold">
+                                    <label className="block font-bold text-gray-500 md:w-2/3">
                                         <input {...register("isOnline")} className="mr-2 leading-tight" type="checkbox"/>
                                         <span className="text-sm">
                                             Publish after creating.
                                         </span>
                                     </label>
                                 </div>
-                                <div className="mt-8 flex justify-end items-center gap-2">
+                                <div className="flex items-center justify-end gap-2 mt-8">
                                 <button
+                                    disabled={isSubmitting}
                                         type="button"
-                                        className="inline-flex w-20 justify-center rounded-md border border-transparent bg-transparent border-dark-header px-4 py-2 text-sm font-medium text-header hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                        className="inline-flex justify-center w-20 px-4 py-2 text-sm font-medium bg-transparent border border-transparent rounded-md border-dark-header text-header hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                         onClick={() => handleCreateSection(false)}
                                     >
                                         Cancel
@@ -108,7 +109,7 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                                     <button
                                         type="submit"
                                         disabled={!isDirty || isSubmitting}
-                                        className="inline-flex w-20 justify-center rounded-md border border-transparent bg-dark-header px-4 py-2 text-sm font-medium text-light-100 hover:bg-accentColor-200 hover:text-header  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                        className="inline-flex justify-center w-20 px-4 py-2 text-sm font-medium border border-transparent rounded-md bg-dark-header text-light-100 hover:bg-accentColor-200 hover:text-header focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                     >
                                         Create
                                     </button>

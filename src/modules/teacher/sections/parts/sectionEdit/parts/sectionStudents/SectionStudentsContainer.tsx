@@ -1,3 +1,4 @@
+import useToast from "@/hooks/useToast";
 import { apiPrivate } from "@/services/axios";
 import { IStudent, ITeacherSection } from "@/types/types"
 import { FC, useMemo, useState } from "react"
@@ -12,6 +13,7 @@ interface IProps {
 
 const SectionStudentsContainer: FC<IProps> = ({pendingStudents, students, blockedStudents, sectionId}) => {
   const [isLoading, setIsLoading] = useState(false)
+  const {toast} = useToast()
   const combineStudents = useMemo(() => {
     if(pendingStudents && students && blockedStudents) {
       return [
@@ -29,11 +31,12 @@ const SectionStudentsContainer: FC<IProps> = ({pendingStudents, students, blocke
     const statusPath = status === "PENDING" ? "/approve" : status === "BLOCKED" ? "/block" : "/unblock"
     try {
       const resp = await apiPrivate.put(url + statusPath, JSON.stringify({studentId}))
+      toast("SUCCESS", "Student access updated!")
       console.log(resp)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
-      alert("An error occured while saving")
+      toast("DANGER", "An error occured while saving")
       setIsLoading(false)
     }
   }

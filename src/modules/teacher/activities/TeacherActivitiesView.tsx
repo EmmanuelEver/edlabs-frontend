@@ -3,6 +3,7 @@ import { IActivitesBySection } from "@/types/types"
 import SectionColumnContainer from "./parts/sectionColumn/SectionColumnContainer"
 import AddActivityContainer from "./parts/addActivity/AddActivityContainer";
 import ActivityContainer from "./parts/editActivity/EditActivityContainer";
+import LoadingComponent from "@/components/loader/LoadingComponent";
 
 interface IProps {
     sectionActivities: IActivitesBySection[]
@@ -10,21 +11,25 @@ interface IProps {
     handleCloseNewActivityModal: () => void;
     activityModal: string;
     selectedActivity: any;
+    isLoading: boolean;
 }
 
-const StudentActivitiesView: FC<IProps> = ({sectionActivities, selectedActivity, handleAddActivity, handleCloseNewActivityModal, activityModal}) => {
+const StudentActivitiesView: FC<IProps> = ({sectionActivities, selectedActivity, isLoading, handleAddActivity, handleCloseNewActivityModal, activityModal}) => {
     
   return (
-    <div className="w-full h-full overflow-hidden">
-        <div className="px-6 w-full">
-            {/* <div className="flex items-center justify-between pt-6 w-full">
-                <button className="flex ml-auto leading-none text-light-100 items-center font-medium justify-center rounded py-4 transition-colors px-4 bg-accentColor-100 hover:bg-blue-200">
+    <div className="relative w-full h-full overflow-hidden"> 
+    {
+        isLoading && <LoadingComponent />
+    }
+        <div className="w-full px-6">
+            {/* <div className="flex items-center justify-between w-full pt-6">
+                <button className="flex items-center justify-center px-4 py-4 ml-auto font-medium leading-none transition-colors rounded text-light-100 bg-accentColor-100 hover:bg-blue-200">
                     <PlusIcon className="w-4 h-4"/>
                     <span className="ml-1">Create section</span>
                 </button>
             </div> */}
         </div>
-        <div className="px-6 pt-8 pb-4 h-full w-auto overflow-auto flex flex-nowrap">
+        <div className="flex w-auto h-full px-6 pt-8 pb-4 overflow-auto flex-nowrap">
             {
                 sectionActivities?.map(activitiesBySection => (
                     <SectionColumnContainer handleAddActivity={handleAddActivity} sectionActivities={activitiesBySection} key={activitiesBySection.id} />

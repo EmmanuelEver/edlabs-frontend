@@ -4,6 +4,8 @@ import SectionEditView from "./SectionEditView";
 import {useForm} from "react-hook-form";
 import useFetch from "@/hooks/useFetch";
 import { apiPrivate } from "@/services/axios";
+import useToast from "@/hooks/useToast";
+import {useSWRConfig}  from "swr"
 
 interface IProps {
     selectedSection: string;
@@ -11,6 +13,8 @@ interface IProps {
 
 const SectionEditContainer: FC<IProps> = ({selectedSection=""}) => {
     const router = useRouter()
+    const {toast} = useToast()
+    const {mutate} = useSWRConfig()
     const {data, revalidate} = useFetch(router.isReady ? `/sections/${router.query.selected}` : null);
     const {register, reset, handleSubmit, formState: {isDirty, isSubmitting, errors, dirtyFields}} = useForm({
       defaultValues: {
@@ -40,10 +44,11 @@ const SectionEditContainer: FC<IProps> = ({selectedSection=""}) => {
       try {
         const resp = await apiPrivate.put(`/sections/${data.id}`, JSON.stringify({...fieldsToSave}))
         await revalidate()
+        toast("SUCCESS", 'Section updated!')
         console.log(resp)
       } catch (error) {
         console.log(error)
-        alert("Error occured while saving")
+        toast("DANGER", 'Section created!')      
       }
     }
 

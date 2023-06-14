@@ -1,13 +1,13 @@
 import useFetch from "@/hooks/useFetch"
+import { useRouter } from "next/router"
 import OutputsView from "./OutputsView"
 
 const OutputsContainer = () => {
-    const {data} = useFetch("/outputs/students")
+    const router = useRouter()
 
-    console.log(data)
     return (
     <OutputsView
-        data={data}
+        showOutputByActivity={router.query.activityId || ""}
     />
   )
 }

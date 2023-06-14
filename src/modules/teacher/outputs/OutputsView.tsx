@@ -1,15 +1,21 @@
-import Avatar from "@/components/avatar/Avatar"
-import Link from "next/link"
 import { FC, Fragment } from "react"
+import OutputsAllContainer from "./parts/outputsAll/OutputsAllContainer";
+import OutputsByActivityContainer from "./parts/outputsByActivity/OutputsByActivityContainer";
 
 interface IProps {
-    data: any
+    showOutputByActivity: any;
 }
 
-const OutputsView:FC<IProps> = ({data}) => {
+const OutputsView:FC<IProps> = ({ showOutputByActivity}) => {
   return (
-    <div className="w-full h-full p-6 overflow-hidden">
-        <div className="w-full h-full overflow-y-auto">
+    <div className="relative w-full h-full p-6 overflow-hidden">
+        {
+            showOutputByActivity ?
+            <OutputsByActivityContainer />
+            :
+            <OutputsAllContainer />
+        }
+        {/* <div className="w-full h-full overflow-y-auto">
             {
             data?.map((section: any, idx: number) => (
                 <Fragment key={section.shortcode + idx}>
@@ -21,7 +27,7 @@ const OutputsView:FC<IProps> = ({data}) => {
                                 {
                                     section?.activities.map((activity: any) => (
                                         <li className="text-sm text-body" key={activity.title}>
-                                            <Link className="hover:underline" href={`/activities?selected=${activity.id}`}>
+                                            <Link className="hover:underline" href={`/outputs?selected=${activity.id}`}>
                                                 {activity.title}
                                             </Link>
                                         </li>
@@ -69,7 +75,7 @@ const OutputsView:FC<IProps> = ({data}) => {
                 </Fragment>
             ))
         }
-        </div>
+        </div> */}
     </div>
   )
 }

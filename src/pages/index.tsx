@@ -1,4 +1,6 @@
 import MainLayout from "@/components/layouts/MainLayout"
+import StudentDashboard from "@/modules/student/dashboard/StudentDashboardContainer";
+import TeacherDashboardContainer from "@/modules/teacher/dashboard/TeacherDashboardContainer";
 import useAppStore from "@/store/appStore";
 import { ROLES } from "@/types/types";
 import { FC } from "react"
@@ -19,7 +21,16 @@ const Home = () => {
   }))
   return (
     <MainLayout pageTitle="Dashboard" role={user?.role}> 
-    
+    {
+        !isAuthenticating &&
+          user?.role === "STUDENT" ?
+          <StudentDashboard />
+          :
+          user?.role === "TEACHER" ?
+            <TeacherDashboardContainer />
+            :
+            null
+      }
     </MainLayout>
   )
 }

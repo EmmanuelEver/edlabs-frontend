@@ -10,7 +10,6 @@ interface IProps {
 }
 
 const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection}) => {
-   console.log(showOnlySpecificSection)
   return (
     <div className="flex flex-col w-full h-full p-6">
       <div className="flex items-center pb-6 border-b flex-nowrap border-light-300">
@@ -27,7 +26,7 @@ const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection}) => {
             </>
           }
       </div>
-      <div className="flex-1 w-full overflow-y-auto">
+      <div className="relative flex-1 w-full overflow-y-auto">
           {
             !!showOnlySpecificSection ?
             <StudentSectionOutputView />

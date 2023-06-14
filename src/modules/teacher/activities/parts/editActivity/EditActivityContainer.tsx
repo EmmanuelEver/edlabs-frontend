@@ -5,6 +5,7 @@ import {useSWRConfig} from "swr"
 import { useRouter } from "next/router";
 import useFetch from "@/hooks/useFetch";
 import { apiPrivate } from "@/services/axios";
+import useToast from "@/hooks/useToast";
 
 interface IProps {
     selectedActivity: string;
@@ -27,6 +28,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
   });
 
   const {mutate} = useSWRConfig()
+  const {toast} = useToast()
 
 
   function handleDescription(value:any) {
@@ -50,11 +52,12 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
     })
     try {
       const resp = await apiPrivate.put(`/activities/${data.id}`, JSON.stringify({...fieldsToSave, description}))
-      console.log(resp)
       await mutate("/activities")
+      toast("SUCCESS", 'Activity updated!')
+
     } catch (error) {
       console.log(error)
-      alert("Error occured while saving")
+      toast("DANGER", 'An error occured while saving')
     }
   }
 

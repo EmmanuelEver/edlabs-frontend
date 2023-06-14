@@ -3,6 +3,7 @@ import AddActivityView from "./AddActivityView";
 import {useForm} from "react-hook-form";
 import { apiPrivate } from "@/services/axios";
 import {useSWRConfig} from "swr"
+import useToast from "@/hooks/useToast";
 
 interface IProps {
     sectionId: string;
@@ -13,6 +14,7 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
   const [description, setDescription] = useState("")
   const {register, reset, handleSubmit, formState: {isSubmitting, isDirty, isSubmitSuccessful}} = useForm();
   const {mutate} = useSWRConfig()
+  const {toast} = useToast()
 
   function handleDescription(value:any) {
     setDescription(value)
@@ -24,10 +26,12 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
       const resp = await apiPrivate.post(`/activities?sectionId=${sectionId}`, JSON.stringify({...val, description}))
       console.log(resp)
       await  mutate("/sections")
+      toast("SUCCESS", 'Activity created!')
       handleCloseModal()
     } catch (error) {
       console.log(error)
-      alert("An error occured while Saving")
+      toast("DANGER", 'An error occured while saving')
+
     }
   }
 
@@ -35,6 +39,9 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
     reset({})
   }, [isSubmitSuccessful])
   
+  function closeModal() {
+    if(!isSubmitting) handleCloseModal()
+  }
 
   return (
     <AddActivityView
@@ -45,7 +52,7 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
       isDirty={isDirty}
       handleDescription={handleDescription} 
       description={description} 
-      handleCloseModal={handleCloseModal} 
+      handleCloseModal={closeModal} 
     />
   )
 }

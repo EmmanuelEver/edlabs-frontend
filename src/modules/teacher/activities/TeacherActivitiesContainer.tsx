@@ -31,7 +31,7 @@ import TeacherActivitiesView from "./TeacherActivitiesView"
 const ActivitiesContainer = () => {
   const router = useRouter()
   const [activityModal, setActivityModal] = useState("")
-  const {data} = useFetch("/sections");
+  const {data, isLoading} = useFetch("/sections");
 
   function handleAddActivity (id: string) {
     setActivityModal(id)
@@ -48,6 +48,7 @@ const ActivitiesContainer = () => {
       handleAddActivity={handleAddActivity} 
       activityModal={activityModal} 
       sectionActivities={data} 
+      isLoading={isLoading}
     />
   )
 }

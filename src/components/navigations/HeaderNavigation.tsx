@@ -39,9 +39,9 @@ const HeaderNavigation = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="absolute right-0 w-full max-w-xs min-w-fit mt-2 px-1.5 py-1 bg-light-100 shadow rounded">
+                    <Menu.Items className="absolute right-0 w-full z-modal max-w-xs min-w-fit mt-2 px-1.5 py-1 bg-light-100 shadow rounded">
                         <Menu.Item>
-                            <button onClick={logout} className="w-full pl-2 py-1 pr-12 text-sm whitespace-nowrap rounded hover:bg-accentColor-200 cursor-pointer">
+                            <button onClick={logout} className="w-full py-1 pl-2 pr-12 text-sm rounded cursor-pointer whitespace-nowrap hover:bg-accentColor-200">
                                 Sign off
                             </button>
                         </Menu.Item>

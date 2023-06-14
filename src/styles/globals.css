@@ -29,6 +29,42 @@ body {
 -webkit-line-clamp: 2;
 display: -webkit-box;
 }
+
+@keyframes loading-spinner {
+  0% { transform: translate(-50%,-50%) rotate(0deg); }
+  100% { transform: translate(-50%,-50%) rotate(360deg); }
+}
+.loading-spinner div {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 4px solid #313131;
+  border-top-color: transparent;
+  border-radius: 50%;
+}
+.loading-spinner div {
+  animation: loading-spinner 1s linear infinite;
+  top: 20px;
+  left: 15px
+}
+.loadingio-spinner-container {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  overflow: hidden;
+  background: transparent;
+}
+.loading-spinner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  transform-origin: 0 0;
+}
+.loading-spinner div { box-sizing: content-box; }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+

@@ -1,3 +1,4 @@
+import useToast from "@/hooks/useToast"
 import { apiPrivate } from "@/services/axios"
 import { ITeacherSection } from "@/types/types"
 import { ChangeEvent, FC, useState } from "react"
@@ -13,7 +14,7 @@ const SectionDetailsContainer: FC<IProps> = ({data}) => {
     const [activitiesList, setShowActivitiesList] = useState(false)
     const [changingOnlineStatus, setChangingOnlineStatus] = useState(false)
     const {mutate} = useSWRConfig()
-
+    const {toast} = useToast()
     async function handleOnlineChange(e: ChangeEvent<HTMLInputElement>) {
       setChangingOnlineStatus(true)
       try {
@@ -21,10 +22,11 @@ const SectionDetailsContainer: FC<IProps> = ({data}) => {
         await mutate(`/sections/${data?.id}`)
         await mutate(`/sections`)
         console.log(resp)
+        toast("SUCCESS", "!ection updated!")
         setChangingOnlineStatus(false)
       } catch (error) {
         console.log(error)
-        alert("Error occured while saving")
+        toast("DANGER", "Error occured while saving")
         setChangingOnlineStatus(false)
       }
     }
