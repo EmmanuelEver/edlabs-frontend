@@ -1,6 +1,7 @@
 import useToast from "@/hooks/useToast";
 import { apiPrivate } from "@/services/axios";
-import { IStudent, ITeacherSection } from "@/types/types"
+import {useSWRConfig} from "swr"
+import { IStudent } from "@/types/types"
 import { FC, useMemo, useState } from "react"
 import SectionStudentsView from "./SectionStudentsView"
 
@@ -14,6 +15,7 @@ interface IProps {
 const SectionStudentsContainer: FC<IProps> = ({pendingStudents, students, blockedStudents, sectionId}) => {
   const [isLoading, setIsLoading] = useState(false)
   const {toast} = useToast()
+  const {mutate} = useSWRConfig()
   const combineStudents = useMemo(() => {
     if(pendingStudents && students && blockedStudents) {
       return [
@@ -24,13 +26,14 @@ const SectionStudentsContainer: FC<IProps> = ({pendingStudents, students, blocke
     }
     return []
   }, [pendingStudents, students, blockedStudents])
-
+  console.log()
   async function updateStatus(status: string | undefined, studentId: string) {
     setIsLoading(true)
     const url = `/sections/${sectionId}`
-    const statusPath = status === "PENDING" ? "/approve" : status === "BLOCKED" ? "/block" : "/unblock"
+    const statusPath = status === "PENDING" ? "/approve" : status === "BLOCKED" ? "/unblock" : "/block"
     try {
       const resp = await apiPrivate.put(url + statusPath, JSON.stringify({studentId}))
+      await mutate(`/sections/${sectionId}`)
       toast("SUCCESS", "Student access updated!")
       console.log(resp)
       setIsLoading(false)

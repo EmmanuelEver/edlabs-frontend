@@ -46,15 +46,20 @@ const StudentSectionOutputView = () => {
                             <h3 className="text-xl font-medium text-header">{outputs?.title}  <span className="ml-2 font-normal">({outputs?.shortcode})</span></h3>
                         </div>
                         {
-                            outputs.activities.map((activity:any) => (
+                            outputs?.activities?.map((activity:any) => (
                                 <div key={activity.id} className="w-full p-4 mt-4 overflow-hidden border shadow-sm bg-light-400">
                                     <div className="flex items-start justify-between">
                                         <h5 className="text-sm font-medium text-header">{activity.title}</h5>
-                                        <p className="text-sm text-header">{activity.sessions[0].compilationCount} Compilation/s</p>
+                                        {
+                                            !!activity?.sessions[0] ?
+                                            <p className="text-sm text-header">{activity?.sessions[0].compilationCount} Compilation/s</p>
+                                            :
+                                            <p className="text-sm text-header">0 Compilation</p>
+                                        }
                                     </div>
-                                    <p className="text-xs text-subHeader">{activity.shortDescription}</p>
+                                    <p className="text-xs text-subHeader">{activity?.shortDescription}</p>
                                     {
-                                        activity.sessions[0] ?
+                                        activity?.sessions[0] ?
                                         <div className="mt-4">
                                             <Carousel responsive={responsive}>
                                                 {

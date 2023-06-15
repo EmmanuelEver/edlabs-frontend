@@ -11,9 +11,11 @@ interface IProps {
     handleSelectSection: (id:string) => void;
     selectedSection: any;
     isLoading: boolean;
+    deleteSection: (id:string, name: string) => void;
+    isDeleting: boolean
 }
 
-const TeacherSectionView: FC<IProps> = ({ sections, activeSections, handleSelectSection, selectedSection, isLoading}) => {
+const TeacherSectionView: FC<IProps> = ({ sections, activeSections, handleSelectSection, selectedSection, isLoading, isDeleting, deleteSection}) => {
   return (
     <div className="relative px-10 py-6">
         {
@@ -45,7 +47,7 @@ const TeacherSectionView: FC<IProps> = ({ sections, activeSections, handleSelect
                 <tbody>
                     {
                         sections?.map((section, idx) => (
-                            <SectionRowView key={section.id} oddRow={idx%2 === 0} handleSelectSection={handleSelectSection} section={section} />
+                            <SectionRowView key={section.id} oddRow={idx%2 === 0} handleSelectSection={handleSelectSection} section={section} deleteSection={deleteSection} isDeleting={isDeleting} />
                         ))
                     }
                 </tbody>

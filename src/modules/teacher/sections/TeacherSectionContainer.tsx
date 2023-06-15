@@ -1,6 +1,10 @@
+import { useConfirmAlert } from "@/context/providers/AlertProvider"
 import useFetch from "@/hooks/useFetch"
+import useToast from "@/hooks/useToast"
+import { apiPrivate } from "@/services/axios"
 import { ITeacherSection } from "@/types/types"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import TeacherSectionView from "./TeacherSectionView"
 
 // const sections: ITeacherSection[] = [
@@ -59,9 +63,11 @@ import TeacherSectionView from "./TeacherSectionView"
 //   }
 // ]
 const TeacherSectionContainer = () => {
-
+  const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
-  const {data, isLoading} = useFetch("/sections");
+  const {data, isLoading, revalidate} = useFetch("/sections");
+  const {toast} = useToast()
+  const {showAlert} = useConfirmAlert()
 
   function handleSelectSection(id: string) {
     router.push({
@@ -71,6 +77,26 @@ const TeacherSectionContainer = () => {
       },
     }, undefined, {shallow: true})
   }
+
+  async function deleteSection(id: string) {
+    try {
+      const resp = await apiPrivate.delete(`/sections/${id}`)
+      await revalidate()
+      toast("SUCCESS", resp?.data?.message || "Section deleted!")
+    } catch (error: any) {
+      console.error(error)
+      toast("DANGER", error?.response?.data?.message || "Error deleting the section")
+    }
+  }
+
+  async function handleDeleteSection(id: string, name: string) {
+    showAlert({
+      title: "Delete Section",
+      confirmMessage: `Are you sure to delete section ${name}?`,
+      onConfirm: () => deleteSection(id)
+    })
+
+  }
   return (
     <TeacherSectionView 
       sections={data}
@@ -78,6 +104,8 @@ const TeacherSectionContainer = () => {
       activeSections={data ? data?.filter((item:ITeacherSection) => item.isOnline).length : 0}
       handleSelectSection={handleSelectSection}
       isLoading={isLoading}
+      deleteSection={handleDeleteSection}
+      isDeleting={isDeleting}
     />
   )
 }

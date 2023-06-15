@@ -1,7 +1,7 @@
 import { FC, Fragment, useMemo } from 'react'
 import dynamic from 'next/dynamic';
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/solid'
+import { XMarkIcon, TrashIcon } from '@heroicons/react/24/solid'
 import 'react-quill/dist/quill.snow.css';
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat"
@@ -21,6 +21,7 @@ interface IProps {
   isDirty: boolean
   data: IActivityFull;
   isDescriptionChanged: boolean;
+  handleDelete: () => void;
 }
 
 const myModules = {
@@ -32,12 +33,12 @@ const myModules = {
   ],
 }
 
-const ActivityView: FC<IProps> = ({handleCloseModal, handleDescription, description, register, handleSubmit, onSubmit, isSubmitting, isDirty, data, isDescriptionChanged}) => {
+const ActivityView: FC<IProps> = ({handleCloseModal, handleDescription, description, register, handleSubmit, onSubmit, isSubmitting, isDirty, data, isDescriptionChanged, handleDelete}) => {
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }),[]);
 
   return (
     <Transition appear show={true} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={handleCloseModal}>
+        <Dialog as="div" className="relative z-10" onClose={() => {}}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -128,7 +129,13 @@ const ActivityView: FC<IProps> = ({handleCloseModal, handleDescription, descript
                     </form>
                     <div className="w-2/5 ml-6 ">
                       <div className="w-full mt-6 ">
-                          <div className="w-full border rounded border-light-300">
+                          <div>
+                            <button onClick={handleDelete} className="flex ml-auto text-sm leading-none text-light-100 items-center font-medium justify-center rounded-sm py-2.5 transition-colors px-4 bg-red-700 hover:text-header hover:bg-accentColor-200">
+                              <TrashIcon className='w-4 h-4' />
+                              <span className='ml-1'>Delete</span>
+                              </button>
+                          </div>
+                          <div className="w-full mt-4 border rounded border-light-300">
                               <ActivityDetailsContainer data={data} />
                           </div>
                           <div className="px-4 mt-4">

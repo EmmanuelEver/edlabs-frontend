@@ -22,7 +22,7 @@ const SectionDetailsContainer: FC<IProps> = ({data}) => {
         await mutate(`/sections/${data?.id}`)
         await mutate(`/sections`)
         console.log(resp)
-        toast("SUCCESS", "!ection updated!")
+        toast("SUCCESS", "Section updated!")
         setChangingOnlineStatus(false)
       } catch (error) {
         console.log(error)

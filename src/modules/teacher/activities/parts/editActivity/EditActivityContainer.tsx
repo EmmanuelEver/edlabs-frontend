@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import useFetch from "@/hooks/useFetch";
 import { apiPrivate } from "@/services/axios";
 import useToast from "@/hooks/useToast";
+import { useConfirmAlert } from "@/context/providers/AlertProvider";
 
 interface IProps {
     selectedActivity: string;
@@ -29,6 +30,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
 
   const {mutate} = useSWRConfig()
   const {toast} = useToast()
+  const {showAlert} = useConfirmAlert()
 
 
   function handleDescription(value:any) {
@@ -59,6 +61,29 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
       console.log(error)
       toast("DANGER", 'An error occured while saving')
     }
+  }
+
+
+  async function deleteActivity() {
+    try {
+      const resp = await apiPrivate.delete(`/activities/${router?.query.selected}`)
+      await mutate("/sections")
+      toast("SUCCESS", resp?.data?.message || "Activity deleted!")
+      router.push({
+        pathname: "/activities",
+      }, undefined, {shallow: true})
+    } catch (error: any) {
+      console.error(error)
+      toast("DANGER", error?.response?.data?.message || "Error deleting the activity")
+    }
+  }
+
+  async function handleDeleteActivity() {
+    showAlert({
+      title: "Delete Activity",
+      confirmMessage: `Are you sure to delete ${data?.title}?`,
+      onConfirm: deleteActivity
+    })
   }
 
   function handleCloseModal() {
@@ -95,6 +120,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
       handleCloseModal={handleCloseModal}
       data={data}
       isDescriptionChanged={isDescriptionChanged}
+      handleDelete={handleDeleteActivity}
     />
   )
 }

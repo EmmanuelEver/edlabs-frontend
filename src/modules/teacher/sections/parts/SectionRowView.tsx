@@ -8,14 +8,16 @@ interface IProps {
     section: ITeacherSection;
     handleSelectSection: (id:string) => void
     oddRow: boolean;
+    deleteSection: (id:string, name: string) => void;
+    isDeleting: boolean;
 }
 
-const SectionRowView: FC <IProps> = ({section, handleSelectSection, oddRow}) => {
+const SectionRowView: FC <IProps> = ({section, handleSelectSection, oddRow, deleteSection, isDeleting}) => {
   return (
     <tr className={clsx("border-b border-light-300", oddRow ? "bg-light-300 bg-opacity-50" : "bg-transparent")}>
         <td colSpan={3} className="pt-2 pb-2 pl-4">
             <div className="flex items-center">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accentColor-200">
+                <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full bg-accentColor-200">
                     <BookOpenIcon className="w-3 h-3" />
                 </div>
                 <div role="button" onClick={() => handleSelectSection(section.id)} className="ml-4 text-xs font-medium cursor-pointer text-header hover:underline">
@@ -50,7 +52,9 @@ const SectionRowView: FC <IProps> = ({section, handleSelectSection, oddRow}) => 
             {section.isOnline ? <span className="text-green-600">ONLINE</span>: <span className="text-subHeader">OFFLINE</span>}
         </td>
         <td colSpan={1} className="pt-2 pb-2">
-            <TrashIcon className="w-5 h-5 text-red-600 cursor-pointer hover:scale-105" />
+            <button disabled={isDeleting} className={isDeleting ? "cursor-wait" : ""}>
+                <TrashIcon onClick={() => deleteSection(section.id, section.title)} className="w-5 h-5 text-red-600 cursor-pointer hover:scale-105" />
+            </button>
         </td>
     </tr>
   )

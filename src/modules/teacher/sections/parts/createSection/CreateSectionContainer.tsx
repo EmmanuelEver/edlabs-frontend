@@ -37,10 +37,11 @@ const CreateSectionContainer = () => {
             const resp = await apiPrivate.post("/sections", JSON.stringify(val))
             await mutate("/sections")
             toast("SUCCESS", 'Section created!')
+            reset()
             setShowCreateModal(false)
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
-            toast("DANGER","an error occured while saving")
+            toast("DANGER", error?.response?.data?.message ||"an error occured while saving")
         }
     }
 
@@ -51,9 +52,9 @@ const CreateSectionContainer = () => {
         }
     }
 
-    useEffect(() => {
-        reset()
-    }, [isSubmitted])
+    // useEffect(() => {
+    //     reset()
+    // }, [isSubmitted])
     
     return (
         <CreateSectionView 
