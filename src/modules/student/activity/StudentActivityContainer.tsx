@@ -1,4 +1,5 @@
 import useFetch from "@/hooks/useFetch"
+import useToast from "@/hooks/useToast"
 import { apiPrivate } from "@/services/axios"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -28,18 +29,24 @@ const StudentActivityContainer = () => {
     const {data:activity, isLoading: loadingActivity} = useFetch(router.isReady && router.query.activityId ? `/activities/${router.query.activityId}` : null)
     const [terminalContent, setTerminalContent] = useState("")
     const [value, setValue] = useState("")
+    const [running, setRunning] = useState(false)
+    const {toast} = useToast()
     
     function handleClearTerminal() {
-
+        setTerminalContent("")
     }
 
     async function handleRun() {
         if(activity && "id" in activity) {
+            setRunning(true)
             try {
                 const resp = await apiPrivate.post("/compilations/student", JSON.stringify({codeValue: value, activitySessionId: data.id}))
                 setTerminalContent(resp?.data?.result || resp?.data?.message)
-            } catch (error) {
+                setRunning(false)
+            } catch (error: any) {
                 console.log(error)
+                toast("DANGER", error?.response?.data.message || "Unkown error occured while running your code")
+                setRunning(false)
             }
         }
     }
@@ -68,6 +75,7 @@ const StudentActivityContainer = () => {
             handleClearTerminal={handleClearTerminal}
             handleShowInstructions={handleShowInstructions}
             initializingActivity={isLoading || loadingActivity}
+            running={running}
         />
     )
 }

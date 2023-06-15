@@ -95,8 +95,8 @@ const TeacherSectionContainer = () => {
       confirmMessage: `Are you sure to delete section ${name}?`,
       onConfirm: () => deleteSection(id)
     })
-
   }
+  
   return (
     <TeacherSectionView 
       sections={data}

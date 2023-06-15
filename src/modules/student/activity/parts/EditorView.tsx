@@ -5,7 +5,6 @@ import { keymap } from "@codemirror/view";
 import {insertTab, indentLess} from '@codemirror/commands'
 import { FC } from 'react';
 import {tokyoNightDay} from '@uiw/codemirror-theme-tokyo-night-day'
-import { InformationCircleIcon } from '@heroicons/react/24/solid'
 import { IActivityFull } from '@/types/types';
 import ActivityDetails from '@/components/activityDetails/ActivityDetails';
 
@@ -16,9 +15,10 @@ interface IProps {
   handleChange: (value:string, b:any) => void;
   handleShowInstructions: () => void;
   activityDetails: IActivityFull | undefined;
+  running: boolean;
 }
 
-const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstructions, activityDetails}) => {
+const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstructions, activityDetails, running}) => {
   return (
     <div className="flex flex-col w-full h-full border-light-300">
          <div className="w-full flex-shrink-0 py-2.5 pl-6 pr-4 border-b border-light-300 flex justify-between items-center">
@@ -27,8 +27,10 @@ const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstr
             </div>
             <div className="flex items-center flex-shrink-0 gap-2">
                 <ActivityDetails details={activityDetails} />
-                <button onClick={handleRun} className="border-dark-header text-light-100 bg-dark-header hover:bg-dark-subHeader border rounded py-1.5 px-4">
-                    Run
+                <button disabled={running} onClick={handleRun} className="border-dark-header text-light-100 bg-dark-header relative hover:bg-dark-subHeader border rounded py-1.5 px-4">
+                    {
+                      running ? "loading..." : "Run"
+                    }
                 </button>
             </div>
         </div>
