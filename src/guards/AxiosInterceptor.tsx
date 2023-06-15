@@ -15,7 +15,6 @@ const useAxiosInterceptors = () => {
     function setupInterceptors() {
       reqInterceptorsRef.current = apiPrivate.interceptors.request.use(
         (config: any) => {
-          //console.log(`[${new Date()}] [REQUEST SENT] =====> ${config.url}`);
           const token = localStorage.getItem("ttfat");
           if (token) {
             if (!isRefreshing.current) {
