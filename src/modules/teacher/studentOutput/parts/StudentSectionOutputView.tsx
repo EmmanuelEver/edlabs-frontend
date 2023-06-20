@@ -4,8 +4,9 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { CodeBlock, atomOneDark } from "react-code-blocks";
 import Link from "next/link";
-import { ArrowLeftIcon } from '@heroicons/react/24/solid'
+import { ArrowLeftIcon, CommandLineIcon } from '@heroicons/react/24/solid'
 import LoadingComponent from "@/components/loader/LoadingComponent";
+import TerminalOutputModalContainer from "@/components/terminalOutputModal/TerminalOutputModalContainer";
 
 const responsive = {
     superLargeDesktop: {
@@ -30,6 +31,20 @@ const responsive = {
 const StudentSectionOutputView = () => {
     const router = useRouter()
     const { data: outputs, isLoading } = useFetch(router?.query?.student ? `/outputs/students/${router.query.student}?sectionId=${router.query.sectionId}` : null)
+    function getLineChanges(prevValue: string, currentValue: string) {
+        const prevValueArray = prevValue.split(/\r?\n/)
+        const currentValueArray = currentValue.split(/\r?\n/)
+
+        const maxLength = Math.max(prevValueArray.length, currentValueArray.length);
+        const unequalIndices = [];
+
+        for (let i = 0; i < maxLength; i++) {
+            if (prevValueArray[i] !== currentValueArray[i]) {
+            unequalIndices.push(i + 1);
+            }
+        }
+        return unequalIndices
+    }
     return (
         <div className="relative w-full h-full pb-4">
             {
@@ -63,14 +78,32 @@ const StudentSectionOutputView = () => {
                                         <div className="mt-4">
                                             <Carousel responsive={responsive}>
                                                 {
-                                                    activity.sessions[0].compilations.map((compilation: any) => (
-                                                        <div key={compilation.id} className="w-full max-w-xs px-2">
+                                                    activity.sessions[0].compilations.map((compilation: any, idx: number) => (
+                                                        <div key={compilation.id} className="relative w-full px-2 overflow-y-auto h-60">
+                                                            <div title="Compilation result" className="absolute z-10 rounded-sm cursor-pointer top-2 right-4">
+                                                                <TerminalOutputModalContainer textValue={compilation.compileResult}>
+                                                                    <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
+                                                                </TerminalOutputModalContainer>
+                                                            </div>
                                                             <CodeBlock
                                                                 text={compilation.codeValue}
                                                                 language="c"
                                                                 showLineNumbers={true}
                                                                 theme={atomOneDark}
-                                                            />
+                                                                highlight={idx === 0 ? "" :getLineChanges(activity.sessions[0].compilations[idx-1].codeValue,compilation.codeValue).join(",")}
+                                                                />
+                                                            {
+                                                            compilation.error && 
+                                                                <div className="mt-1.5 flex items-center gap-2">
+                                                                    <div title="Has error" className='w-4 h-4 bg-red-700 rounded-full'></div>
+                                                                    {
+                                                                        compilation.LineError > 0 ?
+                                                                        `Error at line ${compilation.LineError}`
+                                                                        :
+                                                                        "View compilation result for more error info"
+                                                                    }
+                                                                </div>
+                                                            }
                                                         </div>
                                                         ))
                                                 }
