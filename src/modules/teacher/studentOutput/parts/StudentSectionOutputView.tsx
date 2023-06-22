@@ -84,7 +84,7 @@ const StudentSectionOutputView = () => {
                                                                     label: "eq score",
                                                                     data: [activity?.sessions[0]?.eqScore, 1],
                                                                     backgroundColor: [
-                                                                        `rgba(126, 23, 23, ${activity?.sessions[0]?.eqScore + .70})`, '#9DB2BF',
+                                                                        `rgba(126, 23, 23, ${activity?.sessions[0]?.eqScore + .50})`, '#9DB2BF',
                                                                     ],
                                                                     borderColor: [
                                                                         'rgba(126, 23, 23, 1)', '#9DB2BF'

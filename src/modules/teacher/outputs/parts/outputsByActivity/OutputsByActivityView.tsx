@@ -105,7 +105,7 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading }) => {
                                                     label: "eq score",
                                                     data: [session?.eqScore, 1],
                                                     backgroundColor: [
-                                                        `rgba(126, 23, 23, ${session?.eqScore  + .70})`, '#9DB2BF',
+                                                        `rgba(126, 23, 23, ${session?.eqScore  + .50})`, '#9DB2BF',
                                                     ],
                                                     borderColor: [
                                                         'rgba(126, 23, 23, 1)', '#9DB2BF'
