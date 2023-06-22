@@ -7,6 +7,10 @@ import Link from "next/link"
 import { FC } from "react"
 import Avatar from '@/components/avatar/Avatar';
 import TerminalOutputModalContainer from '@/components/terminalOutputModal/TerminalOutputModalContainer';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const responsive = {
     superLargeDesktop: {
@@ -26,6 +30,23 @@ const responsive = {
         breakpoint: { max: 464, min: 0 },
         items: 1
     }
+};
+
+const dataSet = {
+    labels: [],
+    datasets: [
+        {
+            labeel: "eq score",
+            data: [0.2, 1],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)', '#333',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)', '#333'
+            ],
+            borderWidth: 1,
+        },
+    ],
 };
 
 interface IProps {
@@ -74,7 +95,27 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading }) => {
                                         <p className="text-xs cursor-pointer text-subHeader">{session?.student.user.email}</p>
                                     </div>
                                 </div>
-                                <p className="text-sm text-header">{session?.compilations?.length} Compilation/s</p>
+                                <div className='flex flex-col items-center justify-center'>
+                                    <p className="text-sm text-header">{session?.compilations?.length} Compilation/s</p>
+                                    <div className='w-32 h-24'>
+                                        <Doughnut data={{
+                                            labels: [],
+                                            datasets: [
+                                                {
+                                                    label: "eq score",
+                                                    data: [session?.eqScore, 1],
+                                                    backgroundColor: [
+                                                        `rgba(126, 23, 23, ${session?.eqScore  + .70})`, '#9DB2BF',
+                                                    ],
+                                                    borderColor: [
+                                                        'rgba(126, 23, 23, 1)', '#9DB2BF'
+                                                    ],
+                                                    borderWidth: 1,
+                                                },
+                                            ],
+                                        }} />
+                                    </div>
+                                </div>
                             </div>
                             {
                                 session.compilations.length > 0 ?
