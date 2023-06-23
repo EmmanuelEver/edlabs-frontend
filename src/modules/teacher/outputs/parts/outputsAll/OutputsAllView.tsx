@@ -1,5 +1,6 @@
 import Avatar from "@/components/avatar/Avatar"
 import LoadingComponent from "@/components/loader/LoadingComponent";
+import clsx from "clsx";
 import Link from "next/link"
 import { FC, Fragment } from "react"
 
@@ -17,7 +18,7 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
             {
                 data?.map((section: any, idx: number) => (
                     <Fragment key={section.shortcode + idx}>
-                        <div className="flex w-full pb-6 border-b mt-14 first-of-type:mt-0 flex-nowrap border-light-300">
+                        <div className={clsx("flex w-full pb-6 px-10 pt-14 first-of-type:mt-0 flex-nowrap", idx%2 === 0 ? "" : "bg-light-100")}>
                             <div className="flex-shrink-0 w-full max-w-xs">
                                 <h3 className="font-medium leading-none text-md text-header">{section?.title} <span className="ml-2">({section.shortcode})</span></h3>
                                 <p className="mt-2 text-sm text-subHeader">{section.description}</p>
