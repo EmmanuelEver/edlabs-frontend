@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, CommandLineIcon } from '@heroicons/react/24/solid'
+import { ArrowLeftIcon, CommandLineIcon, ArrowPathIcon } from '@heroicons/react/24/solid'
 import LoadingComponent from "@/components/loader/LoadingComponent";
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
@@ -9,6 +9,7 @@ import Avatar from '@/components/avatar/Avatar';
 import TerminalOutputModalContainer from '@/components/terminalOutputModal/TerminalOutputModalContainer';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import clsx from 'clsx';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -32,29 +33,16 @@ const responsive = {
     }
 };
 
-const dataSet = {
-    labels: [],
-    datasets: [
-        {
-            labeel: "eq score",
-            data: [0.2, 1],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)', '#333',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)', '#333'
-            ],
-            borderWidth: 1,
-        },
-    ],
-};
 
 interface IProps {
     data: any;
     isLoading: boolean;
+    revalidate: any;
+    isValidating: boolean;
+    averageEqScore: string;
 }
 
-const OutputsByActivityView: FC<IProps> = ({ data, isLoading }) => {
+const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isValidating, averageEqScore }) => {
     function getLineChanges(prevValue: string, currentValue: string) {
         const prevValueArray = prevValue.split(/\r?\n/)
         const currentValueArray = currentValue.split(/\r?\n/)
@@ -75,13 +63,22 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading }) => {
             {
                 isLoading && <LoadingComponent />
             }
-            <div className="flex-shrink-0 pt-4 pb-2 shadow-sm bg-light-200">
-                <Link className="flex items-center w-fit text-subHeader hover:text-body hover:underline" href={`/outputs`}>
-                    <ArrowLeftIcon className="w-4 h-4" />
-                    <span className="ml-1 text-xs font-light">All Outputs</span>
-                </Link>
-                <h3 className="text-xl font-medium text-header">{data?.title}</h3>
-                <p className="mt-2 text-sm text-subHeader">{data?.shortDescription}</p>
+            <div className="flex items-start justify-between flex-shrink-0 pt-4 pb-2 shadow-sm flex-nowrap bg-light-200">
+                <div className='pr-4'>
+                    <Link className="flex items-center w-fit text-subHeader hover:text-body hover:underline" href={`/outputs`}>
+                        <ArrowLeftIcon className="w-4 h-4" />
+                        <span className="ml-1 text-xs font-light">All Outputs</span>
+                    </Link>
+                    <h3 className="text-xl font-medium text-header">{data?.title}</h3>
+                    <p className="mt-2 text-sm text-subHeader">{data?.shortDescription}</p>
+                </div>
+                <div className='flex flex-col items-end pr-2'>
+                    <button className='flex items-center gap-2 px-4 py-2 rounded-sm flex-nowrap bg-dark-header' onClick={() => revalidate()} disabled={isValidating || isLoading}>
+                        <ArrowPathIcon className={clsx('w-6 h-6 text-light-200', isValidating ? "animate-spin" : "")} />
+                        <span className='text-sm leading-none text-light-200'>{isValidating ? "Refreshing" : "Refresh data" }</span>
+                    </button>
+                    <p className='mt-2 text-sm font-normal text-body'>Average EQ score: <span className='text-base font-medium'>{averageEqScore}</span></p>
+                </div>
             </div>
             <div className='flex-1 overflow-y-auto'>
                 {
@@ -105,10 +102,10 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading }) => {
                                                     label: "eq score",
                                                     data: [session?.eqScore, 1],
                                                     backgroundColor: [
-                                                        `rgba(126, 23, 23, ${session?.eqScore  + .50})`, '#9DB2BF',
+                                                        `rgba(126, 23, 23, ${session?.eqScore + .50})`, 'rgba(157, 178, 191, .2)',
                                                     ],
                                                     borderColor: [
-                                                        'rgba(126, 23, 23, 1)', '#9DB2BF'
+                                                        'rgba(126, 23, 23, 1)', 'rgba(157, 178, 191, .3)'
                                                     ],
                                                     borderWidth: 1,
                                                 },
@@ -124,7 +121,7 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading }) => {
                                             {
                                                 session.compilations.map((compilation: any, idx: number) => (
                                                     <div key={compilation.id} className="w-full px-2 overflow-y-auto max-h-60">
-                                                        <div title="Compilation result" className="absolute z-10 rounded-sm cursor-pointer top-2 right-4">
+                                                        <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
                                                             <TerminalOutputModalContainer textValue={compilation.compileResult}>
                                                                 <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
                                                             </TerminalOutputModalContainer>

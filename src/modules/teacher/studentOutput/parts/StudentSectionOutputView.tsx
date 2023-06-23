@@ -4,11 +4,13 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { CodeBlock, atomOneDark } from "react-code-blocks";
 import Link from "next/link";
-import { ArrowLeftIcon, CommandLineIcon } from '@heroicons/react/24/solid'
+import { ArrowLeftIcon, CommandLineIcon, ArrowPathIcon } from '@heroicons/react/24/solid'
 import LoadingComponent from "@/components/loader/LoadingComponent";
 import TerminalOutputModalContainer from "@/components/terminalOutputModal/TerminalOutputModalContainer";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { FC } from "react";
+import clsx from "clsx";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const responsive = {
@@ -31,7 +33,12 @@ const responsive = {
     }
 };
 
-const StudentSectionOutputView = () => {
+interface IProps {
+    revalidate: any;
+    isValidating: boolean;
+}
+
+const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
     const router = useRouter()
     const { data: outputs, isLoading } = useFetch(router?.query?.student ? `/outputs/students/${router.query.student}?sectionId=${router.query.sectionId}` : null)
     function getLineChanges(prevValue: string, currentValue: string) {
@@ -48,7 +55,6 @@ const StudentSectionOutputView = () => {
         }
         return unequalIndices
     }
-    console.log(outputs)
     return (
         <div className="relative w-full h-full pb-4">
             {
@@ -58,22 +64,32 @@ const StudentSectionOutputView = () => {
                 outputs ?
                     <>
                         <div className="sticky top-0 pt-4 pb-2 shadow-sm bg-light-200 z-header ">
-                            <Link className="flex items-center text-subHeader hover:text-body hover:underline" href={`/outputs/${router.query.student}`}>
-                                <ArrowLeftIcon className="w-4 h-4" />
-                                <span className="ml-1 text-xs font-light">Joined Sections</span>
-                            </Link>
-                            <h3 className="text-xl font-medium text-header">{outputs?.title}  <span className="ml-2 font-normal">({outputs?.shortcode})</span></h3>
+                            <div className="flex items-start justify-between flex-nowrap">
+                                <div>
+                                    <Link className="flex items-center text-subHeader hover:text-body hover:underline" href={`/outputs/${router.query.student}`}>
+                                        <ArrowLeftIcon className="w-4 h-4" />
+                                        <span className="ml-1 text-xs font-light">Joined Sections</span>
+                                    </Link>
+                                    <h3 className="text-xl font-medium text-header">{outputs?.title}  <span className="ml-2 font-normal">({outputs?.shortcode})</span></h3>
+                                </div>
+                                <div className='pr-2'>
+                                    <button className='flex items-center gap-2 px-4 py-2 rounded-sm flex-nowrap bg-dark-header' onClick={() => revalidate()} disabled={isValidating || isLoading}>
+                                        <ArrowPathIcon className={clsx('w-6 h-6 text-light-200', isValidating ? "animate-spin" : "")} />
+                                        <span className='text-sm leading-none text-light-200'>{isValidating ? "Refreshing" : "Refresh data"}</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         {
                             outputs?.activities?.map((activity: any) => (
                                 <div key={activity.id} className="w-full p-4 mt-4 overflow-hidden border shadow-sm bg-light-400">
                                     <div className="flex items-start justify-between">
                                         <div>
-                                        <h5 className="text-sm font-medium text-header">{activity.title}</h5>
-                                        <p className="text-xs text-subHeader">{activity?.shortDescription}</p>
+                                            <h5 className="text-sm font-medium text-header">{activity.title}</h5>
+                                            <p className="text-xs text-subHeader">{activity?.shortDescription}</p>
                                         </div>
                                         {
-                                            !!activity?.sessions[0] ?
+                                            !!activity?.sessions[0] && activity?.sessions[0].compilationCount > 1 ?
                                                 <div className='flex flex-col items-center justify-center'>
                                                     <p className="text-sm text-header">{activity?.sessions[0].compilationCount} Compilation/s</p>
                                                     <div className='w-32 h-24'>
@@ -84,10 +100,10 @@ const StudentSectionOutputView = () => {
                                                                     label: "eq score",
                                                                     data: [activity?.sessions[0]?.eqScore, 1],
                                                                     backgroundColor: [
-                                                                        `rgba(126, 23, 23, ${activity?.sessions[0]?.eqScore + .50})`, '#9DB2BF',
+                                                                        `rgba(126, 23, 23, ${activity?.sessions[0]?.eqScore + .50})`, 'rgba(157, 178, 191, .2)',
                                                                     ],
                                                                     borderColor: [
-                                                                        'rgba(126, 23, 23, 1)', '#9DB2BF'
+                                                                        'rgba(126, 23, 23, 1)', 'rgba(157, 178, 191, .2)'
                                                                     ],
                                                                     borderWidth: 1,
                                                                 },
@@ -109,7 +125,7 @@ const StudentSectionOutputView = () => {
                                                     {
                                                         activity.sessions[0].compilations.map((compilation: any, idx: number) => (
                                                             <div key={compilation.id} className="relative w-full px-2 overflow-y-auto h-60">
-                                                                <div title="Compilation result" className="absolute z-10 rounded-sm cursor-pointer top-2 right-4">
+                                                                <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
                                                                     <TerminalOutputModalContainer textValue={compilation.compileResult}>
                                                                         <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
                                                                     </TerminalOutputModalContainer>

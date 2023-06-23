@@ -7,9 +7,11 @@ import StudentSectionOutputView from "./parts/StudentSectionOutputView";
 interface IProps {
   user: User | undefined;
   showOnlySpecificSection: any;
+  revalidate: any;
+  isValidating: boolean;
 }
 
-const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection}) => {
+const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection, revalidate, isValidating}) => {
   return (
     <div className="flex flex-col w-full h-full p-6">
       <div className="flex items-center pb-6 border-b flex-nowrap border-light-300">
@@ -29,7 +31,7 @@ const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection}) => {
       <div className="relative flex-1 w-full overflow-y-auto">
           {
             !!showOnlySpecificSection ?
-            <StudentSectionOutputView />
+            <StudentSectionOutputView revalidate={revalidate} isValidating={isValidating}  />
             :
             <StudentAllOutputView />
           }

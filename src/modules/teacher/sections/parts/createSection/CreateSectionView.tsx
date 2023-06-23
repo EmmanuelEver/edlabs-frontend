@@ -1,6 +1,6 @@
 import { FC, Fragment } from "react";
 import { Dialog, Transition } from '@headlessui/react'
-import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { PlusIcon, XMarkIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import { ICreateSectionForm } from "./CreateSectionContainer";
 
 
@@ -52,7 +52,13 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                         as="div"
                         className="flex items-center justify-between"
                     >
-                        <h3 className="text-lg font-medium leading-6 text-header">Create section</h3>
+                        <div className="flex items-center">
+                            <UserGroupIcon className="w-6 h-6 mr-2"/>
+                            <div>
+                                <h3 className="text-lg font-medium leading-6 text-header">Create section</h3>
+                                <p></p>
+                            </div>
+                        </div>
                         <button onClick={() => handleCreateSection(false)} className="w-6 h-6">
                             <XMarkIcon className="text-header" />
                         </button>
@@ -60,39 +66,39 @@ const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, ha
                         <div className="mt-7">
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="relative mb-5">
-                                    <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="section-name">
+                                    <label className="block mb-2 text-xs font-medium text-body" htmlFor="section-title">
                                         Section name*
                                     </label>
-                                    <input {...register("title", {required: "This field is required"})} className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="section-title" type="text"/>
+                                    <input {...register("title", {required: "This field is required"})} className="w-full px-3 py-2 leading-tight text-gray-700 border rounded appearance-none focus:outline-none focus:shadow-outline" id="section-title" type="text"/>
                                     {
                                         !!errors?.title &&
                                         <p className="absolute text-xs text-red-500 -bottom-4">{errors?.title?.message}</p>
                                     }
                                 </div>
                                 <div className="relative mb-5">
-                                    <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="shortCode">
+                                    <label className="block mb-2 text-xs font-medium text-body" htmlFor="shortCode">
                                         Shortcode*
                                     </label>
-                                    <input {...register("shortcode", {required: "This field is required"})} className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="shortCode" type="text"/>
+                                    <input {...register("shortcode", {required: "This field is required"})} className="w-full px-3 py-2 leading-tight text-gray-700 border rounded appearance-none focus:outline-none focus:shadow-outline" id="shortCode" type="text"/>
                                     {
                                         !!errors?.shortcode &&
                                         <p className="absolute text-xs text-red-500 -bottom-4">{errors?.shortcode?.message}</p>
                                     }
                                 </div>
                                 <div className="relative mb-5">
-                                    <label className="block mb-2 text-sm font-medium text-subHeader" htmlFor="section-description">
+                                    <label className="block mb-2 text-xs font-medium text-body" htmlFor="section-description">
                                         Section description*
                                     </label>
-                                    <textarea {...register("description", {required: "This field is required"})} className="w-full h-20 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none resize-none focus:outline-none focus:shadow-outline" id="section-description" placeholder="Add a description..."/>
+                                    <textarea {...register("description", {required: "This field is required"})} className="w-full h-20 px-3 py-2 text-xs leading-tight text-gray-700 border rounded appearance-none resize-none placeholder:text-sm focus:outline-none focus:shadow-outline" id="section-description" placeholder="Add a description..."/>
                                     {
                                         !!errors?.description &&
                                         <p className="absolute text-xs text-red-500 -bottom-4">{errors?.description?.message}</p>
                                     }
                                 </div>
                                 <div>
-                                    <label className="block font-bold text-gray-500 md:w-2/3">
+                                    <label className="block font-medium text-body md:w-2/3">
                                         <input {...register("isOnline")} className="mr-2 leading-tight" type="checkbox"/>
-                                        <span className="text-sm">
+                                        <span className="text-xs">
                                             Publish after creating.
                                         </span>
                                     </label>
