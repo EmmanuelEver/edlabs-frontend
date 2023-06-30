@@ -12,7 +12,7 @@ interface IProps {
 
 const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
   const [description, setDescription] = useState("")
-  const {register, reset, handleSubmit, formState: {isSubmitting, isDirty, isSubmitSuccessful}} = useForm();
+  const {register, reset, handleSubmit, control, formState: {isSubmitting, isDirty, isSubmitSuccessful}} = useForm();
   const {mutate} = useSWRConfig()
   const {toast} = useToast()
 
@@ -34,7 +34,6 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
 
     }
   }
-
   useEffect(() => {
     reset({})
   }, [isSubmitSuccessful])
@@ -53,6 +52,7 @@ const AddActivityContainer: FC<IProps> = ({handleCloseModal, sectionId}) => {
       handleDescription={handleDescription} 
       description={description} 
       handleCloseModal={closeModal} 
+      control={control}
     />
   )
 }

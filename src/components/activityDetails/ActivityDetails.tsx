@@ -38,7 +38,7 @@ const ActivityDetails:FC<IProps> = ({wrapperClassName="", details}) => {
                                 text={details.starterCode}
                                 theme={atomOneDark}
                                 showLineNumbers={true}
-                                language="c"
+                                language={details?.lang || "c"}
                                 wrapLines
                             />
                         </div>

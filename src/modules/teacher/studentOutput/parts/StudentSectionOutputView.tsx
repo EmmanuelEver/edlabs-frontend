@@ -124,19 +124,21 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                                 <Carousel responsive={responsive}>
                                                     {
                                                         activity.sessions[0].compilations.map((compilation: any, idx: number) => (
-                                                            <div key={compilation.id} className="relative w-full px-2 overflow-y-auto h-60">
+                                                            <div key={compilation.id} className="relative flex flex-col w-full px-2 overflow-y-auto h-60">
                                                                 <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
                                                                     <TerminalOutputModalContainer textValue={compilation.compileResult}>
                                                                         <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
                                                                     </TerminalOutputModalContainer>
                                                                 </div>
-                                                                <CodeBlock
-                                                                    text={compilation.codeValue}
-                                                                    language="c"
-                                                                    showLineNumbers={true}
-                                                                    theme={atomOneDark}
-                                                                    highlight={idx === 0 ? "" : getLineChanges(activity.sessions[0].compilations[idx - 1].codeValue, compilation.codeValue).join(",")}
-                                                                />
+                                                                <div className="flex-1">
+                                                                    <CodeBlock
+                                                                        text={compilation.codeValue}
+                                                                        language={activity?.lang}
+                                                                        showLineNumbers={true}
+                                                                        theme={atomOneDark}
+                                                                        highlight={idx === 0 ? "" : getLineChanges(activity.sessions[0].compilations[idx - 1].codeValue, compilation.codeValue).join(",")}
+                                                                    />
+                                                                </div>
                                                                 {
                                                                     compilation.error &&
                                                                     <div className="mt-1.5 flex items-center gap-2">

@@ -17,13 +17,14 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
   const {data, revalidate} = useFetch(router?.query.selected ? `/activities/${router?.query.selected}` : null)
   const [description, setDescription] = useState("")
   const [isDescriptionChanged, setIsDescriptionChangedRef] = useState(false)
-  const {register, reset, handleSubmit, formState: {isSubmitting, isDirty, dirtyFields}} = useForm({
+  const {register, reset, handleSubmit, control, formState: {isSubmitting, isDirty, dirtyFields}} = useForm({
     defaultValues: {
       title: "",
       shortDescription: "",
       openDate: "",
       closeDate: "",
-      starterCode: ""
+      starterCode: "",
+      lang: "python"
     },
     shouldUnregister: true
   });
@@ -100,6 +101,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
         title: data.title,
         shortDescription: data.shortDescription,
         starterCode: data.starterCode,
+        lang: data.lang,
         openDate: new Date(data.openDate).toISOString().split("T")[0],
         closeDate: new Date(data.closeDate).toISOString().split("T")[0],
       }, {keepDirty: false, keepDirtyValues: false})
@@ -121,6 +123,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
       data={data}
       isDescriptionChanged={isDescriptionChanged}
       handleDelete={handleDeleteActivity}
+      control={control}
     />
   )
 }

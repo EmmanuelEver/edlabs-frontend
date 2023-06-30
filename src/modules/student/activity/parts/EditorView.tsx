@@ -1,6 +1,7 @@
 import CodeMirror from '@uiw/react-codemirror';
 import {StreamLanguage} from "@codemirror/language"
 import {c} from "@codemirror/legacy-modes/mode/clike"
+import {python} from "@codemirror/legacy-modes/mode/python"
 import { keymap } from "@codemirror/view";
 import {insertTab, indentLess} from '@codemirror/commands'
 import { FC } from 'react';
@@ -34,7 +35,7 @@ const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstr
                 </button>
             </div>
         </div>
-        <CodeMirror className='h-full' theme={tokyoNightDay} height='100%' extensions={[StreamLanguage.define(c),
+        <CodeMirror className='h-full' theme={tokyoNightDay} height='100%' extensions={[StreamLanguage.define(activityDetails?.lang === "c" ? c : activityDetails?.lang === "python" ? python : c),
          keymap.of([{key: 'Tab', preventDefault: true, run: insertTab}, {key: 'Shift-Tab', preventDefault: true, run: indentLess}]),
         ]} value={value} onChange={handleChange} />
     </div>

@@ -1,9 +1,9 @@
 import { FC, Fragment, useMemo } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/solid'
+import { Dialog, Transition, Listbox } from '@headlessui/react'
+import { XMarkIcon, ClipboardDocumentListIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid'
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
-
+import { Controller } from "react-hook-form";
 
 interface IProps {
   handleCloseModal: () => void;
@@ -14,6 +14,7 @@ interface IProps {
   onSubmit: (val: any) => void
   isSubmitting: boolean;
   isDirty: boolean
+  control: any;
 }
 
 
@@ -26,7 +27,9 @@ const myModules = {
   ],
 }
 
-const AddActivityView: FC<IProps> = ({ handleCloseModal, handleDescription, description, register, handleSubmit, onSubmit, isSubmitting, isDirty }) => {
+const langs = ["c", "python"]
+
+const AddActivityView: FC<IProps> = ({ handleCloseModal, handleDescription, description, register, handleSubmit, onSubmit, isSubmitting, isDirty, control }) => {
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
   return (
@@ -94,10 +97,65 @@ const AddActivityView: FC<IProps> = ({ handleCloseModal, handleDescription, desc
                       <label className="block mb-1 text-xs font-medium text-body" htmlFor="expiredDate">
                         Starter code
                       </label>
+                      <div className="relative mb-3">
+                        <Controller
+                          defaultValue="python"
+                          control={control}
+                          name="lang"
+                          render={
+                            ({ field: { value, ref, onChange, onBlur } }) => (
+                              <Listbox ref={ref} value={value} onChange={onChange}>
+                                <div className="relative mt-1">
+                                  <Listbox.Button className="relative min-w-[100px] w-fit pr-3 py-1 pl-2 text-left bg-white rounded-sm border border-light-300 cursor-default focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                    <span className="block text-sm truncate">{value}</span>
+                                    <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                      <ChevronUpDownIcon
+                                        className="w-5 h-5 text-gray-400"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  </Listbox.Button>
+                                  <Transition
+                                    as={Fragment}
+                                    leave="transition ease-in duration-100"
+                                    leaveFrom="opacity-100"
+                                    leaveTo="opacity-0"
+                                  >
+                                    <Listbox.Options className="absolute py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg w-fit z-dropdown max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                      {langs.map((lang, langIdx) => (
+                                        <Listbox.Option
+                                          key={langIdx}
+                                          className={({ active }) =>
+                                            `relative cursor-default select-none py-2 pl-3 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                                            }`
+                                          }
+                                          value={lang}
+                                        >
+                                          {({ selected }) => (
+                                            <>
+                                              <span
+                                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                  }`}
+                                              >
+                                                {lang}
+                                              </span>
+                                            </>
+                                          )}
+                                        </Listbox.Option>
+                                      ))}
+                                    </Listbox.Options>
+                                  </Transition>
+                                </div>
+                              </Listbox>
+                            )
+                          }
+                        />
+                      </div>
                       <div id="newActivity-starterCode" className="relative h-28 max-h-36">
                         <textarea {...register("starterCode", { shouldUnregister: true })} className="w-full h-full px-2 py-1 font-mono text-sm border rounded resize-none border-light-300" />
                       </div>
                     </div>
+
                     <div className='flex items-center'>
                       <div className="relative mb-3">
                         <label className="block mb-1 text-xs font-medium text-body" htmlFor="openDate">

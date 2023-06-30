@@ -120,19 +120,21 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isVali
                                         <Carousel responsive={responsive}>
                                             {
                                                 session.compilations.map((compilation: any, idx: number) => (
-                                                    <div key={compilation.id} className="w-full px-2 overflow-y-auto max-h-60">
+                                                    <div key={compilation.id} className="flex flex-col w-full px-2">
                                                         <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
                                                             <TerminalOutputModalContainer textValue={compilation.compileResult}>
                                                                 <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
                                                             </TerminalOutputModalContainer>
                                                         </div>
+                                                        <div className='flex-1 overflow-y-auto h-60'>
                                                         <CodeBlock
                                                             text={compilation.codeValue}
-                                                            language="c"
+                                                            language={data?.lang}
                                                             showLineNumbers={true}
                                                             theme={atomOneDark}
                                                             highlight={idx === 0 ? "" : getLineChanges(session.compilations[idx - 1].codeValue, compilation.codeValue).join(",")}
                                                         />
+                                                        </div>
                                                         {
                                                             compilation.error &&
                                                             <div className="mt-1.5 flex items-center gap-2">

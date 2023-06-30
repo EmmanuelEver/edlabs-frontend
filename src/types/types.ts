@@ -32,7 +32,8 @@ export interface IActivityFull {
     shortDescription: string;
     description: string;
     isOnline: boolean;
-    section: IActivitesBySection
+    section: IActivitesBySection;
+    lang: "c" | "python"
 
 }
 
