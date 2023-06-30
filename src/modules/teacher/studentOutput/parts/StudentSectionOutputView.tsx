@@ -124,13 +124,13 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                                 <Carousel responsive={responsive}>
                                                     {
                                                         activity.sessions[0].compilations.map((compilation: any, idx: number) => (
-                                                            <div key={compilation.id} className="relative flex flex-col w-full px-2 overflow-y-auto h-60">
+                                                            <div key={compilation.id} className="relative flex flex-col w-full px-2 overflow-hidden max-h-64">
                                                                 <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
                                                                     <TerminalOutputModalContainer textValue={compilation.compileResult}>
                                                                         <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
                                                                     </TerminalOutputModalContainer>
                                                                 </div>
-                                                                <div className="flex-1">
+                                                                <div className="flex-1 overflow-y-auto">
                                                                     <CodeBlock
                                                                         text={compilation.codeValue}
                                                                         language={activity?.lang}
