@@ -1,5 +1,5 @@
 import useFetch from '@/hooks/useFetch'
-import { IActivitySummary, ISection } from '@/types/types'
+import { IActivitySummary } from '@/types/types'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import OutputsByActivityView from './OutputsByActivityView'

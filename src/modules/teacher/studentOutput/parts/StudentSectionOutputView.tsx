@@ -17,11 +17,11 @@ const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
         breakpoint: { max: 4000, min: 3000 },
-        items: 4
+        items: 2
     },
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: 3
+        items: 2
     },
     tablet: {
         breakpoint: { max: 1024, min: 464 },
@@ -120,17 +120,12 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                     </div>
                                     {
                                         activity?.sessions[0] ?
-                                            <div className="mt-4">
-                                                <Carousel responsive={responsive}>
+                                            <div className="relative pb-6 mt-4">
+                                                <Carousel draggable={false} showDots renderDotsOutside responsive={responsive} dotListClass='flex-wrap w-full'>
                                                     {
                                                         activity.sessions[0].compilations.map((compilation: any, idx: number) => (
-                                                            <div key={compilation.id} className="relative flex flex-col w-full px-2 overflow-hidden max-h-64">
-                                                                <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
-                                                                    <TerminalOutputModalContainer textValue={compilation.compileResult}>
-                                                                        <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
-                                                                    </TerminalOutputModalContainer>
-                                                                </div>
-                                                                <div className="flex-1 overflow-y-auto">
+                                                            <div key={compilation.id} className="relative flex flex-col w-full px-2 overflow-hidden">
+                                                                <div className="overflow-y-auto h-[300px] codeblock-wrapper ">
                                                                     <CodeBlock
                                                                         text={compilation.codeValue}
                                                                         language={activity?.lang}
@@ -139,7 +134,7 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                                                         highlight={idx === 0 ? "" : getLineChanges(activity.sessions[0].compilations[idx - 1].codeValue, compilation.codeValue).join(",")}
                                                                     />
                                                                 </div>
-                                                                {
+                                                                {/* {
                                                                     compilation.error &&
                                                                     <div className="mt-1.5 flex items-center gap-2">
                                                                         <div title="Has error" className='w-4 h-4 bg-red-700 rounded-full'></div>
@@ -150,7 +145,26 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                                                                 "View compilation result for more error info"
                                                                         }
                                                                     </div>
+                                                                } */}
+                                                                <div>
+                                                            <div className="w-full h-64 p-2 mt-4 overflow-hidden overflow-x-auto overflow-y-auto text-left align-middle transition-all transform rounded-md shadow-xl bg-dark-header">
+                                                                {
+                                                                    compilation.error &&
+                                                                    compilation?.LineError > 0 ?
+                                                                        <p className='mb-4 text-red-300'>
+                                                                            {`Line error: ${compilation.LineError} ${compilation.errorType ? `(${compilation.errorType})` : ""}`}
+                                                                        </p>
+                                                                        :
+                                                                        null
                                                                 }
+                                                                <p className='mb-2 font-bold text-light-300'>
+                                                                            Compile result: 
+                                                                        </p>
+                                                                <pre className='whitespace-pre-wrap text-light-200'>
+                                                                    {compilation.compileResult}
+                                                                </pre>
+                                                            </div>
+                                                        </div>
                                                             </div>
                                                         ))
                                                     }

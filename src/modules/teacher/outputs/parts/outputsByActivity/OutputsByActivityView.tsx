@@ -6,7 +6,6 @@ import { CodeBlock, atomOneDark } from "react-code-blocks";
 import Link from "next/link"
 import { FC } from "react"
 import Avatar from '@/components/avatar/Avatar';
-import TerminalOutputModalContainer from '@/components/terminalOutputModal/TerminalOutputModalContainer';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import clsx from 'clsx';
@@ -17,11 +16,11 @@ const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
         breakpoint: { max: 4000, min: 3000 },
-        items: 4
+        items: 2
     },
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: 3
+        items: 2
     },
     tablet: {
         breakpoint: { max: 1024, min: 464 },
@@ -75,7 +74,7 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isVali
                 <div className='flex flex-col items-end pr-2'>
                     <button className='flex items-center gap-2 px-4 py-2 rounded-sm flex-nowrap bg-dark-header' onClick={() => revalidate()} disabled={isValidating || isLoading}>
                         <ArrowPathIcon className={clsx('w-6 h-6 text-light-200', isValidating ? "animate-spin" : "")} />
-                        <span className='text-sm leading-none text-light-200'>{isValidating ? "Refreshing" : "Refresh data" }</span>
+                        <span className='text-sm leading-none text-light-200'>{isValidating ? "Refreshing" : "Refresh data"}</span>
                     </button>
                     <p className='mt-2 text-sm font-normal text-body'>Average EQ score: <span className='text-base font-medium'>{averageEqScore}</span></p>
                 </div>
@@ -116,37 +115,39 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isVali
                             </div>
                             {
                                 session.compilations.length > 0 ?
-                                    <div className="mt-4">
-                                        <Carousel responsive={responsive}>
+                                    <div className="relative pb-6 mt-4">
+                                        <Carousel draggable={false} showDots renderDotsOutside dotListClass='flex-wrap w-full' responsive={responsive}>
                                             {
                                                 session.compilations.map((compilation: any, idx: number) => (
-                                                    <div key={compilation.id} className="flex flex-col w-full px-2 overflow-y-hidden max-h-64">
-                                                        <div title="Compilation result" className="sticky top-0 z-20 w-full rounded-sm cursor-pointer bg-light-200">
-                                                            <TerminalOutputModalContainer textValue={compilation.compileResult}>
-                                                                <CommandLineIcon className="w-5 h-5 rounded-sm bg-light-200 text-dark-100" />
-                                                            </TerminalOutputModalContainer>
+                                                    <div key={compilation.id} className="flex flex-col w-full px-2 overflow-y-hidden">
+                                                        <div className='overflow-y-auto h-[300px] codeblock-wrapper'>
+                                                            <CodeBlock
+                                                                text={compilation.codeValue}
+                                                                language={data?.lang}
+                                                                showLineNumbers={true}
+                                                                theme={atomOneDark}
+                                                                highlight={idx === 0 ? "" : getLineChanges(session.compilations[idx - 1].codeValue, compilation.codeValue).join(",")}
+                                                            />
                                                         </div>
-                                                        <div className='flex-1 overflow-y-auto'>
-                                                        <CodeBlock
-                                                            text={compilation.codeValue}
-                                                            language={data?.lang}
-                                                            showLineNumbers={true}
-                                                            theme={atomOneDark}
-                                                            highlight={idx === 0 ? "" : getLineChanges(session.compilations[idx - 1].codeValue, compilation.codeValue).join(",")}
-                                                        />
-                                                        </div>
-                                                        {
-                                                            compilation.error &&
-                                                            <div className="mt-1.5 flex items-center gap-2">
-                                                                <div title="Has error" className='w-4 h-4 bg-red-700 rounded-full'></div>
+                                                        <div>
+                                                            <div className="w-full h-64 p-2 mt-4 overflow-hidden overflow-x-auto overflow-y-auto text-left align-middle transition-all transform rounded-md shadow-xl bg-dark-header">
                                                                 {
-                                                                    compilation.LineError > 0 ?
-                                                                        `Error at line ${compilation.LineError}`
+                                                                    compilation.error &&
+                                                                    compilation?.LineError > 0 ?
+                                                                        <p className='mb-4 text-red-300'>
+                                                                            {`Line error: ${compilation.LineError} ${compilation.errorType ? `(${compilation.errorType})` : ""}`}
+                                                                        </p>
                                                                         :
-                                                                        "View compilation result for more error info"
+                                                                        null
                                                                 }
+                                                                <p className='mb-2 font-bold text-light-300'>
+                                                                            Compile result: 
+                                                                        </p>
+                                                                <pre className='whitespace-pre-wrap text-light-200'>
+                                                                    {compilation.compileResult}
+                                                                </pre>
                                                             </div>
-                                                        }
+                                                        </div>
                                                     </div>
                                                 ))
                                             }

@@ -7,6 +7,26 @@ body {
   font-family: 'Noto Sans JP', sans-serif;
 }
 
+.codeblock-wrapper > * {
+  height: 100%;
+}
+.codeblock-wrapper > span > code > span[style*="opacity: 0.3;"] {
+  opacity: 1 !important;
+  user-select: auto !important;
+
+}
+.codeblock-wrapper > span > code > span[style*="opacity: 1;"] {
+  position: relative !important;
+  background-color: rgba(88, 133, 175, .5) !important;
+  padding: 4px 8px !important;
+  border-radius: 4px;
+  user-select: auto !important;
+}
+.codeblock-wrapper > span > code > span[style*="opacity: 1;"] * {
+  filter: brightness(120%)
+}
+
+
 .quill {
   height: 100%;
   display: flex;
