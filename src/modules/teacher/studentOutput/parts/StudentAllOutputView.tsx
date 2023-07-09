@@ -17,7 +17,7 @@ const StudentAllOutputView = () => {
         outputs?.map((section: any) => (
           <div key={section.id} className="px-4 mb-4 last-of-type:mb-0">
             <ActivityCard >
-              <h3 title={section.title} className="text-base font-bold text-header">
+              <h3 title={section.title} className="text-base font-bold text-header hover:underline">
                 <Link href={`/outputs/${router.query.student}?sectionId=${section.id}`}>
                   {section.title}
                 </Link>
@@ -26,7 +26,9 @@ const StudentAllOutputView = () => {
                 {
                   section?.activities?.map((activity: any) => (
                     <li className="text-sm text-body" key={activity.id}>
-                      <span>{activity.title}</span>
+                      <Link href={`/outputs/${router.query.student}?activityId=${activity.id}`} >
+                        <span className="hover:underline">{activity.title}</span>
+                      </Link>
                       <span className="text-[10px] text-subHeader">  ({activity?.compilations?.length} compilations)</span>
                     </li>
                   ))

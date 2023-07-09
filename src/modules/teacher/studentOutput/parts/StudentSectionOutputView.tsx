@@ -85,32 +85,14 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                 <div key={activity.id} className="w-full p-4 mt-4 overflow-hidden border shadow-sm bg-light-400">
                                     <div className="flex items-start justify-between">
                                         <div>
-                                            <h5 className="text-sm font-medium text-header">{activity.title}</h5>
+                                            <h3 className="text-base font-medium text-header">{activity.title}</h3>
                                             <p className="text-xs text-subHeader">{activity?.shortDescription}</p>
                                         </div>
                                         {
                                             !!activity?.sessions[0] && activity?.sessions[0].compilationCount > 1 ?
-                                                <div className='flex flex-col items-center justify-center'>
-                                                    <p className="text-sm text-header">{activity?.sessions[0].compilationCount} Compilation/s</p>
-                                                    <div className='w-32 h-24'>
-                                                        <Doughnut data={{
-                                                            labels: [],
-                                                            datasets: [
-                                                                {
-                                                                    label: "eq score",
-                                                                    data: [activity?.sessions[0]?.eqScore, 1],
-                                                                    backgroundColor: [
-                                                                        `rgba(126, 23, 23, ${activity?.sessions[0]?.eqScore + .50})`, 'rgba(157, 178, 191, .2)',
-                                                                    ],
-                                                                    borderColor: [
-                                                                        'rgba(126, 23, 23, 1)', 'rgba(157, 178, 191, .2)'
-                                                                    ],
-                                                                    borderWidth: 1,
-                                                                },
-                                                            ],
-                                                        }} />
-
-                                                    </div>
+                                                <div className='flex flex-col items-end justify-center'>
+                                                    <Link href={`/outputs/${router.query.student}?activityId=${activity.id}`} className="mr-4 font-bold hover:underline">VIEW FULL</Link>
+                                                    <p className="mr-4 text-sm text-header">{activity?.sessions[0].compilationCount} Compilation/s</p>
                                                 </div>
                                                 :
                                                 <p className="text-sm text-header">0 Compilation</p>

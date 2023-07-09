@@ -5,9 +5,14 @@ import StudentOutputView from "./StudentOutputView"
 const StudentOutputContainer = () => {
   const router = useRouter()
   const {data: user, revalidate, isValidating} = useFetch(router?.query?.student ? `/users/${router.query.student}` : null)
-  const {data: outputs} = useFetch(router?.query?.student ? `/outputs/students/${router.query.student}?sectionId=${router.query.sectionId}` : null)
+
   return (
-    <StudentOutputView  revalidate={revalidate} isValidating={isValidating} user={user} showOnlySpecificSection={router?.query?.sectionId || ""} />
+    <StudentOutputView  
+      revalidate={revalidate} 
+      isValidating={isValidating} 
+      user={user} 
+      showOnlySpecificSection={router?.query?.activityId ? "activity" : router?.query?.sectionId ?  "section" : ""} 
+    />
   )
 }
 

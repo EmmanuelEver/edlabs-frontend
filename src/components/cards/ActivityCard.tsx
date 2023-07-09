@@ -8,7 +8,7 @@ interface IProps extends PropsWithChildren {
 
 const ActivityCard: FC<IProps> = ({children, rest}) => {
   return (
-    <article {...rest} className="rounded-lg shadow-md p-5 bg-light-100 w-full hover:shadow-lg cursor-pointer transition-shadow">
+    <article {...rest} className="relative w-full p-5 transition-shadow rounded-lg shadow-md bg-light-100 hover:shadow-lg">
        {children}
     </article>
   )

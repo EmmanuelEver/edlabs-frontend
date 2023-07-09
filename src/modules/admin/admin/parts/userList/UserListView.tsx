@@ -15,10 +15,9 @@ interface IProps {
 const UserListView: FC<IProps> = ({ data, setEditUser, editUser, closeModal, selectedUser, revalidate }) => {
   return (
     <div className="w-full h-full overflow-hidden">
-
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-dark-100">
-          <thead className="text-xs text-dark-100  uppercase bg-accentColor-200">
+      <div className="relative h-full overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
+        <table className="relative w-full text-sm text-left text-dark-100">
+          <thead className="sticky top-0 text-xs uppercase text-dark-100 bg-accentColor-200">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Fullname
@@ -46,7 +45,7 @@ const UserListView: FC<IProps> = ({ data, setEditUser, editUser, closeModal, sel
           <tbody>
             {
               data?.map((user) => (
-                <tr key={user.id} className=" border-b bg-light-400 text-dark-header border-light-300  hover:bg-opacity-50">
+                <tr key={user.id} className="border-b bg-light-400 text-dark-header border-light-300 hover:bg-opacity-50">
                   <th scope="row" className="px-6 py-4 font-medium text-dark-header whitespace-nowra">
                     {user.name}
                   </th>

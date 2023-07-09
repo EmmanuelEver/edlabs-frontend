@@ -1,24 +1,27 @@
 import { User } from "@/types/types";
 import Image from "next/image";
 import { FC } from "react"
+import StudentActivityOutputView from "./parts/StudentActivityOutputView";
 import StudentAllOutputView from "./parts/StudentAllOutputView";
 import StudentSectionOutputView from "./parts/StudentSectionOutputView";
 
 interface IProps {
   user: User | undefined;
-  showOnlySpecificSection: any;
+  showOnlySpecificSection: string;
   revalidate: any;
   isValidating: boolean;
 }
 
-const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection, revalidate, isValidating}) => {
+const StudentOutputView: FC<IProps> = ({ user, showOnlySpecificSection, revalidate, isValidating }) => {
   return (
     <div className="flex flex-col w-full h-full p-6">
-      <div className="flex items-center pb-6 border-b flex-nowrap border-light-300">
+      {
+        (showOnlySpecificSection === "" || showOnlySpecificSection === "section")  &&
+        <div className="flex items-center pb-6 border-b flex-nowrap border-light-300">
           {
-            !!user && 
+            !!user &&
             <>
-              <div className="w-20 h-20 overflow-hidden rounded-full">
+              <div className="overflow-hidden rounded-full w-14 h-14">
                 <Image className="object-contain w-full h-full rounded-full" width={50} height={50} src={user.profileUrl} alt={user.name} />
               </div>
               <div className="flex-col items-center ml-4">
@@ -27,15 +30,21 @@ const StudentOutputView:FC<IProps> = ({user, showOnlySpecificSection, revalidate
               </div>
             </>
           }
-      </div>
-      <div className="relative flex-1 w-full overflow-y-auto">
-          {
-            !!showOnlySpecificSection ?
-            <StudentSectionOutputView revalidate={revalidate} isValidating={isValidating}  />
+        </div>
+      }
+      {
+        showOnlySpecificSection === "activity" ?
+          <StudentActivityOutputView />
+          :
+          showOnlySpecificSection === "section" ?
+          <div className="relative flex-1 w-full overflow-y-auto">
+            <StudentSectionOutputView revalidate={revalidate} isValidating={isValidating} />
+            </div>
             :
-            <StudentAllOutputView />
-          }
-      </div>
+            <div className="relative flex-1 w-full overflow-y-auto">
+              <StudentAllOutputView />
+            </div>
+      }
     </div>
   )
 }

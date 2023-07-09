@@ -4,9 +4,9 @@ import UserListContainer from './parts/userList/UserListContainer'
 
 const AdminView = () => {
   return (
-    <div className="w-full p-4">
+    <div className="flex flex-col w-full h-full p-4">
         <Tab.Group>
-            <Tab.List className="flex w-fit space-x-1 rounded-xl bg-blue-900/20 p-1">
+            <Tab.List className="flex flex-shrink-0 p-1 space-x-1 w-fit rounded-xl bg-blue-900/20">
                 <Tab
                     className={({ selected }) =>
                         clsx(
@@ -34,8 +34,8 @@ const AdminView = () => {
                     SECTIONS
                 </Tab>
             </Tab.List>
-            <Tab.Panels className="mt-8 w-full">
-                <Tab.Panel>
+            <Tab.Panels className="flex-1 w-full mt-4 overflow-hidden">
+                <Tab.Panel className="h-full">
                     <UserListContainer />
                 </Tab.Panel>
                 <Tab.Panel>

@@ -21,6 +21,14 @@ const OutputsByActivityContainer = () => {
         }
         return "0"
     }, [data])
+
+    const sessions = useMemo(() => {
+        if(data) {
+            const sessions = data.sessions?.sort((a: IActivitySummary,b: IActivitySummary) => b.eqScore - a.eqScore)
+            return sessions
+        }
+        return null
+    }, [data])
     return (
         <OutputsByActivityView 
             data={data}
@@ -28,6 +36,7 @@ const OutputsByActivityContainer = () => {
             revalidate={revalidate}
             isValidating={isValidating}
             averageEqScore={averageEqScore}
+            sessions={sessions}
         />
     )
 }

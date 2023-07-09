@@ -17,7 +17,9 @@ export interface IActivitySummary {
     closeDate: string;
     createdAt: string;
     shortDescription: string;
-    sessions: any[]; 
+    sessions: any[];
+    eqScore: number;
+    lang: "c" | "python";
 }
 
 export interface IActivityFull {

@@ -1,14 +1,14 @@
-import { ArrowLeftIcon, CommandLineIcon, ArrowPathIcon } from '@heroicons/react/24/solid'
+import { ArrowLeftIcon, ArrowPathIcon } from '@heroicons/react/24/solid'
 import LoadingComponent from "@/components/loader/LoadingComponent";
 import "react-multi-carousel/lib/styles.css";
-import Carousel from "react-multi-carousel";
-import { CodeBlock, atomOneDark } from "react-code-blocks";
 import Link from "next/link"
-import { FC } from "react"
+import { FC, useMemo } from "react"
 import Avatar from '@/components/avatar/Avatar';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
 import clsx from 'clsx';
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+dayjs.extend(relativeTime)
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -39,9 +39,10 @@ interface IProps {
     revalidate: any;
     isValidating: boolean;
     averageEqScore: string;
+    sessions: any[] | null;
 }
 
-const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isValidating, averageEqScore }) => {
+const OutputsByActivityView: FC<IProps> = ({ data, sessions, isLoading, revalidate, isValidating, averageEqScore }) => {
     function getLineChanges(prevValue: string, currentValue: string) {
         const prevValueArray = prevValue.split(/\r?\n/)
         const currentValueArray = currentValue.split(/\r?\n/)
@@ -56,6 +57,18 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isVali
         }
         return unequalIndices
     }
+
+    function getGeqs(eqScores: any[]) {
+        const totalScore = eqScores.reduce((a, score) => {
+            if(!isNaN(score.eqScore)) {
+                return a + score.eqScore
+            }
+            return a
+        }, 0)
+
+        return parseFloat((totalScore / eqScores.length).toString()).toFixed(3)
+    }
+
 
     return (
         <div className="flex flex-col w-full h-full overflow-y-auto">
@@ -80,37 +93,19 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isVali
                 </div>
             </div>
             <div className='flex-1 overflow-y-auto'>
-                {
+                {/* {
                     data?.sessions?.map((session: any) => (
                         <div key={session?.id} className="w-full p-4 mt-4 overflow-hidden border shadow-sm bg-light-400">
                             <div className="flex items-start justify-between">
                                 <div className='flex items-center'>
                                     <Avatar image={session?.student.user.profileUrl} name={session?.student.user.name} />
-                                    <div className="flex-col items-center ml-2">
-                                        <h2 className="text-sm font-medium leading-tight text-header">{session?.student.user.name}</h2>
-                                        <p className="text-xs cursor-pointer text-subHeader">{session?.student.user.email}</p>
+                                    <div className="flex-col items-center">
+                                        <Link href={`/outputs/${session?.student.user.id}?activityId=${data.id}`} className="ml-2 text-sm font-medium leading-tight hover:underline text-header">{session?.student.user.name}</Link>
+                                        <p className="ml-2 text-xs cursor-pointer text-subHeader">{session?.student.user.email}</p>
                                     </div>
                                 </div>
                                 <div className='flex flex-col items-center justify-center'>
                                     <p className="text-sm text-header">{session?.compilations?.length} Compilation/s</p>
-                                    <div className='w-32 h-24'>
-                                        <Doughnut data={{
-                                            labels: [],
-                                            datasets: [
-                                                {
-                                                    label: "eq score",
-                                                    data: [session?.eqScore, 1],
-                                                    backgroundColor: [
-                                                        `rgba(126, 23, 23, ${session?.eqScore + .50})`, 'rgba(157, 178, 191, .2)',
-                                                    ],
-                                                    borderColor: [
-                                                        'rgba(126, 23, 23, 1)', 'rgba(157, 178, 191, .3)'
-                                                    ],
-                                                    borderWidth: 1,
-                                                },
-                                            ],
-                                        }} />
-                                    </div>
                                 </div>
                             </div>
                             {
@@ -158,7 +153,48 @@ const OutputsByActivityView: FC<IProps> = ({ data, isLoading, revalidate, isVali
                             }
                         </div>
                     ))
-                }
+                } */}
+
+                <table className="w-full mt-4 table-fixed">
+                    <thead>
+                        <tr>
+                        <th colSpan={4} className='pb-2 pl-2 text-sm font-light text-left text-subHeader'>STUDENT</th>
+                        <th colSpan={2} className='pb-2 text-sm font-light text-left text-subHeader'>EQ SCORE</th>
+                        <th colSpan={2} className='pb-2 text-sm font-light text-left text-subHeader'>COMPILATIONS</th>
+                        <th colSpan={2} className='pb-2 text-sm font-light text-left text-subHeader'>LAST UPDATED</th>
+                        <th colSpan={2} className='pb-2 text-sm font-light text-left text-subHeader'>GENERAL EQ SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            sessions?.map((session: any) => (
+                                <tr key={session?.id}>
+                                    <td colSpan={4} className="pl-2">
+                                        <div className='flex items-center'>
+                                            <Avatar image={session?.student.user.profileUrl} name={session?.student.user.name} />
+                                            <div className="flex-col items-center">
+                                                <Link href={`/outputs/${session?.student.user.id}?activityId=${data.id}`} className="ml-2 text-sm font-medium leading-tight hover:underline text-header">{session?.student.user.name}</Link>
+                                                <p className="ml-2 text-xs cursor-pointer text-subHeader">{session?.student.user.email}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td colSpan={2}> 
+                                        {parseFloat(session?.eqScore).toFixed(3)}
+                                    </td>
+                                    <td colSpan={2}> 
+                                        {session?.compilations?.length}
+                                    </td>
+                                    <td colSpan={2}> 
+                                        {dayjs(session.lastUpdated).fromNow()}
+                                    </td>
+                                    <td colSpan={2}> 
+                                        {getGeqs(session?.student?.activitySessions)}
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     )

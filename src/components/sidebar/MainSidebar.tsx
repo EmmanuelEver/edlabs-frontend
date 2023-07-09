@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, PropsWithChildren, useState } from "react"
-import { HomeIcon, ClipboardDocumentListIcon, RectangleGroupIcon, CommandLineIcon, UserGroupIcon } from '@heroicons/react/24/solid'
+import { HomeIcon, ClipboardDocumentListIcon, CircleStackIcon, CommandLineIcon, UserGroupIcon } from '@heroicons/react/24/solid'
 import { useRouter } from "next/router";
 
 interface IProps extends PropsWithChildren {
@@ -25,12 +25,12 @@ const MainSidebar: FC<IProps> = ({role}) => {
             <ul className={clsx("mt-8 w-full flex flex-col items-center", hovered ? "pr-4 pl-4" : "")}>
                 <li className="w-full mb-3">
                     <Link href="/" >
-                        <div className={clsx("w-full py-2 flex items-center", router.pathname === "/" ? "bg-dark-header text-light-100": "bg-transparent text-blue-200", hovered ? "rounded justify-start pl-4" : "justify-center")}>
+                        <div className={clsx("w-full py-2 flex items-center", router.pathname === "/" ? "bg-dark-header text-light-100": "bg-transparent hover:bg-dark-header transition-all hover:text-subHeader hover:bg-opacity-20 text-blue-200", hovered ? "rounded-full justify-start pl-4" : "justify-center")}>
                             <div className="w-7 h-7">
                                 <HomeIcon />
                             </div>
                             {
-                                hovered && <div className="ml-4 font-medium">
+                                hovered && <div className="ml-4 text-sm font-normal tracking-wide">
                                                 Dashboard
                                             </div>
                             }
@@ -39,12 +39,12 @@ const MainSidebar: FC<IProps> = ({role}) => {
                 </li>
                 <li className="w-full mb-3">
                     <Link href="/sections" >
-                        <div className={clsx("w-full py-2 flex items-center", router.pathname  === "/sections" ? "bg-dark-header text-light-100": "bg-transparent text-blue-200",hovered ? "rounded justify-start pl-4" : "justify-center")}>
+                        <div className={clsx("w-full py-2 flex items-center", router.pathname  === "/sections" ? "bg-dark-header text-light-100": "bg-transparent hover:bg-dark-header transition-all hover:text-subHeader hover:bg-opacity-20 text-blue-200",hovered ? "rounded-full justify-start pl-4" : "justify-center")}>
                             <div className="w-7 h-7">
-                                <RectangleGroupIcon />
+                                <UserGroupIcon />
                             </div>
                             {
-                                hovered && <div className="ml-4 font-medium">
+                                hovered && <div className="ml-4 text-sm font-normal tracking-wide">
                                                 Sections
                                             </div>
                             }
@@ -53,12 +53,12 @@ const MainSidebar: FC<IProps> = ({role}) => {
                 </li>
                 <li className="w-full mb-3">
                     <Link href="/activities" >
-                        <div className={clsx("w-full py-2 flex items-center", router.pathname.includes("/activities") ? "bg-dark-header text-light-100": "bg-transparent text-blue-200", hovered ? "rounded justify-start pl-4" : "justify-center")}>
+                        <div className={clsx("w-full py-2 flex items-center", router.pathname.includes("/activities") ? "bg-dark-header text-light-100": "bg-transparent hover:bg-dark-header transition-all hover:text-subHeader hover:bg-opacity-20 text-blue-200", hovered ? "rounded-full justify-start pl-4" : "justify-center")}>
                             <div className="w-7 h-7">
                                 <ClipboardDocumentListIcon />
                             </div>
                             {
-                                hovered && <div className="ml-4 font-medium">
+                                hovered && <div className="ml-4 text-sm font-normal tracking-wide">
                                                 Activities
                                             </div>
                             }
@@ -69,12 +69,12 @@ const MainSidebar: FC<IProps> = ({role}) => {
                     role === "TEACHER" &&
                     <li className="w-full mb-3">
                         <Link href="/outputs" >
-                            <div className={clsx("w-full py-2 flex items-center", router.pathname.includes("/outputs")? "bg-dark-header text-light-100": "bg-transparent text-blue-200", hovered ? "rounded justify-start pl-4" : "justify-center")}>
+                            <div className={clsx("w-full py-2 flex items-center", router.pathname.includes("/outputs")? "bg-dark-header text-light-100": "bg-transparent hover:bg-dark-header transition-all hover:text-subHeader hover:bg-opacity-20 text-blue-200", hovered ? "rounded-full justify-start pl-4" : "justify-center")}>
                                 <div className="w-7 h-7">
-                                    <UserGroupIcon />
+                                    <CommandLineIcon />
                                 </div>
                                 {
-                                    hovered &&  <div className="ml-4 font-medium">
+                                    hovered &&  <div className="ml-4 text-sm font-normal tracking-wide">
                                                     Outputs
                                                 </div>
                                 }
@@ -86,12 +86,12 @@ const MainSidebar: FC<IProps> = ({role}) => {
                     role === "ADMIN" &&
                     <li className="w-full mb-3">
                         <Link href="/admin" >
-                            <div className={clsx("w-full py-2 flex items-center", router.pathname  === "/settings" ? "bg-dark-header text-light-100": "bg-transparent text-blue-200", hovered ? "rounded justify-start pl-4" : "justify-center")}>
+                            <div className={clsx("w-full py-2 flex items-center", router.pathname  === "/settings" ? "bg-dark-header text-light-100": "bg-transparent hover:bg-dark-header transition-all hover:text-subHeader hover:bg-opacity-20 text-blue-200", hovered ? "rounded-full justify-start pl-4" : "justify-center")}>
                                 <div className="w-7 h-7">
-                                    <CommandLineIcon />
+                                    <CircleStackIcon/>
                                 </div>
                                 {
-                                    hovered &&  <div className="ml-4 font-medium">
+                                    hovered &&  <div className="ml-4 text-sm font-normal tracking-wide">
                                                     Admin
                                                 </div>
                                 }

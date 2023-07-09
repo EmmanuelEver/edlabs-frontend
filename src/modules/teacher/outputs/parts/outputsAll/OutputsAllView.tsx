@@ -10,6 +10,40 @@ interface IProps {
 }
 
 const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
+    function getEqScore(sessions: any, sectionId: string) {
+        const sectionSessions = sessions?.filter((session: any) => session.activity.sectionId === sectionId)
+        
+        const sectionSessionsSocre = sectionSessions.reduce((a: number, session: any) => {
+            if(!isNaN(session.eqScore)) {
+                return a + session.eqScore
+            }
+            return a
+        }, 0)
+        const eqScore = parseFloat((sectionSessionsSocre / sectionSessions.length).toString()).toFixed(3)
+        return eqScore
+    }
+    function getGeqs(sessions: any) {
+        const sectionSessionsSocre = sessions.reduce((a: number, session: any) => {
+            if(!isNaN(session.eqScore)) {
+                return a + session.eqScore
+            }
+            return a
+        }, 0)
+        const eqScore = parseFloat((sectionSessionsSocre / sessions.length).toString()).toFixed(3)
+
+        return eqScore
+    }
+
+    function sortStudents(students: any[], sectionId: string) {
+        try {
+            return students.sort((a:any, b:any) => {
+                return parseFloat(getEqScore(b.activitySessions, sectionId)) - parseFloat(getEqScore(a.activitySessions, sectionId))
+            })
+        } catch (error) {
+            return students
+        }
+    }
+
     return (
         <div className="w-full h-full overflow-y-auto">
         {
@@ -40,18 +74,19 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
                                         <tr className="border-b border-light-300">
                                             <th colSpan={4} className='pb-2 pl-6 text-xs font-light text-left text-subHeader'>NAME</th>
                                             <th colSpan={2} className='pb-2 text-xs font-light text-left text-subHeader'>OUTPUTS</th>
-                                            <th colSpan={2} className='pb-2 text-xs font-light text-left text-subHeader'></th>
+                                            <th colSpan={2} className='pb-2 text-xs font-light text-left text-subHeader'>EQ SCORE</th>
+                                            <th colSpan={2} className='pb-2 text-xs font-light text-left text-subHeader'>GEQS</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
-                                            section?.students?.map((student: any) => (
+                                            sortStudents(section?.students, section?.id).map((student: any) => (
                                                 <tr key={student.user.id} className="border-b boder-light-400 last-of-type:border-none">
                                                     <td colSpan={4} className="py-2 pl-6">
                                                         <div className="flex items-center">
                                                             <Avatar wrapperClassName="w-5 h-5 flex-shrink-0" image={student.user.profileUrl} name={student.user.name} />
                                                             <div className="flex flex-col items-start ml-2">
-                                                                <h5 className="text-sm font-medium text-header">{student.user.name}</h5>
+                                                                <Link href={`/outputs/${student.user.id}?sectionId=${section.id}`}  className="text-sm font-medium text-header hover:underline">{student.user.name}</Link>
                                                                 <p className="text-xs font-normal text-subHeader">{student.user.email}</p>
                                                             </div>
                                                         </div>
@@ -60,9 +95,10 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
                                                         <p className="text-sm font-normal text-subHeader">{student?.activitySessions?.length}</p>
                                                     </td>
                                                     <td colSpan={2}>
-                                                        <Link href={`/outputs/${student.user.id}?sectionId=${section.id}`} className="text-sm font-medium text-header">
-                                                            <span>VIEW OUTPUT</span>
-                                                        </Link>
+                                                        <p className="text-sm font-normal text-subHeader">{getEqScore(student?.activitySessions, section.id)}</p>
+                                                    </td>
+                                                    <td colSpan={2}>
+                                                        <p className="text-sm font-normal text-subHeader">{getGeqs(student?.activitySessions)}</p>
                                                     </td>
                                                 </tr>
                                             ))
