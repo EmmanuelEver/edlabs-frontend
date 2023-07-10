@@ -92,7 +92,7 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                             !!activity?.sessions[0] && activity?.sessions[0].compilationCount > 1 ?
                                                 <div className='flex flex-col items-end justify-center'>
                                                     <Link href={`/outputs/${router.query.student}?activityId=${activity.id}`} className="mr-4 font-bold hover:underline">VIEW FULL</Link>
-                                                    <p className="mr-4 text-sm text-header">{activity?.sessions[0].compilationCount} Compilation/s</p>
+                                                    <p className="mr-4 text-2xl font-bold text-right text-red-400">{parseFloat(activity?.sessions[0].eqScore).toFixed(3)}</p>
                                                 </div>
                                                 :
                                                 <p className="text-sm text-header">0 Compilation</p>

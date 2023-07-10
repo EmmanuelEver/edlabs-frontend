@@ -73,7 +73,7 @@ const StudentActivityOutputView = () => {
                         <h3 className="text-lg font-medium text-right text-header">{output?.title}</h3>
                         {
                             !!session && 
-                            <h4 className="text-3xl font-bold text-right text-red-400">{parseFloat(session.eqScore).toFixed(4)}</h4>
+                            <h4 className="text-3xl font-bold text-right text-red-400">{parseFloat(session.eqScore).toFixed(3)}</h4>
                         }
                     </div>
                 }
