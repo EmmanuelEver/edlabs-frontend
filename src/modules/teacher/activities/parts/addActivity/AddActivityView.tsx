@@ -27,7 +27,7 @@ const myModules = {
   ],
 }
 
-const langs = ["c", "python"]
+const langs = ["c", "python", "java"]
 
 const AddActivityView: FC<IProps> = ({ handleCloseModal, handleDescription, description, register, handleSubmit, onSubmit, isSubmitting, isDirty, control }) => {
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);

@@ -52,7 +52,6 @@ const StudentActivityContainer = () => {
     }
 
     function handleChange(editorValue:string, b:any) {
-        console.log(b)
         setValue(editorValue)
     }
 

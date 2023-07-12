@@ -35,9 +35,11 @@ const EditorView: FC<IProps> = ({handleRun, value, handleChange, handleShowInstr
                 </button>
             </div>
         </div>
+        <div className='flex-1 overflow-y-auto'>
         <CodeMirror className='h-full' theme={tokyoNightDay} height='100%' extensions={[StreamLanguage.define(activityDetails?.lang === "c" ? c : activityDetails?.lang === "python" ? python : c),
          keymap.of([{key: 'Tab', preventDefault: true, run: insertTab}, {key: 'Shift-Tab', preventDefault: true, run: indentLess}]),
         ]} value={value} onChange={handleChange} />
+        </div>
     </div>
   )
 }
