@@ -56,6 +56,12 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
                             <div className="flex-shrink-0 w-full max-w-xs">
                                 <h3 className="font-medium leading-none text-md text-header">{section?.title} <span className="ml-2">({section.shortcode})</span></h3>
                                 <p className="mt-2 text-sm text-subHeader">{section.description}</p>
+                                {
+                                    section?.errorTypes?.length >= 1 &&
+                                    <div className="mt-2 text-subHeader">
+                                        Most common errors: <span className="text-sm font-semibold text-red-600">{section?.errorTypes?.filter((val) => val !== "null").join(", ")}</span>
+                                    </div>
+                                }
                                 <ul className="mt-4 list-disc list-inside">
                                     {
                                         section?.activities.map((activity: any) => (

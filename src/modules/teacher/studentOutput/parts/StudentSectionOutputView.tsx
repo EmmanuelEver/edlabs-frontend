@@ -71,6 +71,7 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                         <span className="ml-1 text-xs font-light">Joined Sections</span>
                                     </Link>
                                     <h3 className="text-xl font-medium text-header">{outputs?.title}  <span className="ml-2 font-normal">({outputs?.shortcode})</span></h3>
+
                                 </div>
                                 <div className='pr-2'>
                                     <button className='flex items-center gap-2 px-4 py-2 rounded-sm flex-nowrap bg-dark-header' onClick={() => revalidate()} disabled={isValidating || isLoading}>
@@ -79,6 +80,24 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                     </button>
                                 </div>
                             </div>
+                            {
+                                outputs?.errorTypes?.length >= 1 &&
+                                <div className="mt-2">
+                                    <p className="text-lg font-medium text-red-600">Most common errors:</p>
+                                    <ul className="pl-4 list-disc list-inside">
+                                        {
+                                            outputs?.errorTypes?.map((errorType) => (
+                                                errorType === "null" ?
+                                                    null :
+                                                    <li key={errorType}>
+                                                        {errorType}
+                                                    </li>
+                                            ))
+
+                                        }
+                                    </ul>
+                                </div>
+                            }
                         </div>
                         {
                             outputs?.activities?.map((activity: any) => (
@@ -129,24 +148,24 @@ const StudentSectionOutputView: FC<IProps> = ({ revalidate, isValidating }) => {
                                                                     </div>
                                                                 } */}
                                                                 <div>
-                                                            <div className="w-full h-64 p-2 mt-4 overflow-hidden overflow-x-auto overflow-y-auto text-left align-middle transition-all transform rounded-md shadow-xl bg-dark-header">
-                                                                {
-                                                                    compilation.error &&
-                                                                    compilation?.LineError > 0 ?
-                                                                        <p className='mb-4 text-red-300'>
-                                                                            {`Line error: ${compilation.LineError} ${compilation.errorType ? `(${compilation.errorType})` : ""}`}
+                                                                    <div className="w-full h-64 p-2 mt-4 overflow-hidden overflow-x-auto overflow-y-auto text-left align-middle transition-all transform rounded-md shadow-xl bg-dark-header">
+                                                                        {
+                                                                            compilation.error &&
+                                                                                compilation?.LineError > 0 ?
+                                                                                <p className='mb-4 text-red-300'>
+                                                                                    {`Line error: ${compilation.LineError} ${compilation.errorType ? `(${compilation.errorType})` : ""}`}
+                                                                                </p>
+                                                                                :
+                                                                                null
+                                                                        }
+                                                                        <p className='mb-2 font-bold text-light-300'>
+                                                                            Compile result:
                                                                         </p>
-                                                                        :
-                                                                        null
-                                                                }
-                                                                <p className='mb-2 font-bold text-light-300'>
-                                                                            Compile result: 
-                                                                        </p>
-                                                                <pre className='whitespace-pre-wrap text-light-200'>
-                                                                    {compilation.compileResult}
-                                                                </pre>
-                                                            </div>
-                                                        </div>
+                                                                        <pre className='whitespace-pre-wrap text-light-200'>
+                                                                            {compilation.compileResult}
+                                                                        </pre>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         ))
                                                     }

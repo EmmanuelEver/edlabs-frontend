@@ -8,6 +8,8 @@ import Image from "next/image";
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import ProglangLogo from "@/components/logos/ProglangLogo";
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
+import clsx from "clsx";
 dayjs.extend(relativeTime)
 
 const responsive = {
@@ -49,7 +51,6 @@ const StudentActivityOutputView = () => {
         }
         return unequalIndices
     }
-
     const session = output ? output?.sessions[0] : null
     return (
         <div className="relative flex-1 w-full overflow-y-auto">
@@ -107,10 +108,23 @@ const StudentActivityOutputView = () => {
                                            
                                         }
 
-                                        <Carousel draggable={false} showDots renderDotsOutside responsive={responsive} dotListClass='flex-wrap w-full'>
+                                        <Carousel draggable={false} showDots renderDotsOutside responsive={responsive} dotListClass='flex-wrap !relative w-4/5 !mx-auto '>
                                             {
                                                 output.sessions[0].compilations.map((compilation: any, idx: number) => (
                                                     <div key={compilation.id} className="relative flex flex-col w-full px-2 overflow-hidden">
+                                                        <div className="flex items-center justify-between">
+                                                            <div># <span>{compilation?.compileTimes}</span></div>
+                                                            {
+                                                                idx >= 1 &&
+                                                                (typeof compilation?.eqScore === "number" && !Number.isNaN(compilation?.eqScore)) &&
+                                                                <div className={clsx("flex items-center gap-1.5", compilation.eqScore > output.sessions[0].compilations[idx-1].eqScore ? "text-red-600" : "text-green-600")}>
+                                                                    {
+                                                                        compilation.eqScore > output.sessions[0].compilations[idx-1].eqScore ? <ArrowUpIcon className="w-4 h-4" /> : <ArrowDownIcon className="w-4 h-4" />
+                                                                    }
+                                                                    {parseFloat(compilation.eqScore.toString()).toFixed(3)}
+                                                                </div>
+                                                            }
+                                                        </div>
                                                         <div className="overflow-y-auto h-[300px] codeblock-wrapper ">
                                                             <CodeBlock
                                                                 text={compilation.codeValue}
