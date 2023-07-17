@@ -17,7 +17,7 @@ const TerminalView: FC <IProps> = ({terminalContent, handleClearTerminal}) => {
             </div>
         </div>
         <div className="flex-1 w-full overflow-hidden">
-            <pre className="p-2.5 text-base text-body  overflow-auto w-full h-full">
+            <pre className="p-2.5 text-base text-body whitespace-pre-wrap  overflow-auto w-full h-full">
                 {terminalContent}
             </pre>
         </div>
