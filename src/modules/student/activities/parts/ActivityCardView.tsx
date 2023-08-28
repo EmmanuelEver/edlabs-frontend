@@ -30,7 +30,7 @@ const ActivityCardView: FC<IProps> = ({activity}) => {
             activity?.sessions?.length === 0 && <PlusCircleIcon className="w-6 h-6 text-dark-header" />
           }
         </div>
-        <h3 title={activity.title} className="text-base font-bold text-header">{activity.title}</h3>
+        <h3 title={activity.title} className="text-base font-bold text-blue-300">{activity.title}</h3>
         <p title={activity.shortDescription} className="w-full mt-2 text-sm text-body text-overflow-clamp">{activity.shortDescription}</p>
         <div className="flex items-center gap-1 mt-4">
           {

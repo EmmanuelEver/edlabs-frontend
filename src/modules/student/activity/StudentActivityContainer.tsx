@@ -71,6 +71,7 @@ const StudentActivityContainer = () => {
             value={value} 
             handleChange={handleChange}
             handleRun={handleRun} 
+            handleExit={() => router?.back()}
             terminalContent={terminalContent} 
             handleClearTerminal={handleClearTerminal}
             handleShowInstructions={handleShowInstructions}

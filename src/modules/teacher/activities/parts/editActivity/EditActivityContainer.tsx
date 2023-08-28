@@ -24,7 +24,8 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
       openDate: "",
       closeDate: "",
       starterCode: "",
-      lang: "python"
+      lang: "python",
+      correctAnswer: ""
     },
     shouldUnregister: true
   });
@@ -102,6 +103,7 @@ const ActivityContainer: FC<IProps> = ({selectedActivity}) => {
         shortDescription: data.shortDescription,
         starterCode: data.starterCode,
         lang: data.lang,
+        correctAnswer: data?.correctAnswer,
         openDate: new Date(data.openDate).toISOString().split("T")[0],
         closeDate: new Date(data.closeDate).toISOString().split("T")[0],
       }, {keepDirty: false, keepDirtyValues: false})

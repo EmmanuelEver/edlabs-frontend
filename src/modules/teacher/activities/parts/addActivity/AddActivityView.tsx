@@ -86,18 +86,33 @@ const AddActivityView: FC<IProps> = ({ handleCloseModal, handleDescription, desc
                       <input id='shortDescription' {...register("shortDescription", { required: "This field is required." })} className="w-full py-1 pl-2 mb-3 text-sm font-medium border rounded text-header placeholder:font-normal" placeholder="Short description" />
                     </div>
                     <div className="relative mb-3">
-                      <label className="block mb-1 text-xs font-medium text-body" htmlFor="expiredDate">
+                      <label className="block mb-1 text-xs font-medium text-body" htmlFor="newActivity-description">
                         Description
                       </label>
-                      <div id="newActivity-description" className="relative h-36 max-h-72">
+                      <div id="newActivity-description" className="relative h-40 max-h-72">
                         <ReactQuill modules={myModules} value={description} onChange={handleDescription} />
                       </div>
                     </div>
                     <div className="relative mb-3">
-                      <label className="block mb-1 text-xs font-medium text-body" htmlFor="expiredDate">
-                        Starter code
-                      </label>
-                      <div className="relative mb-3">
+                      <div className='flex items-center gap-5'>
+                        <div className="relative w-full">
+                          <label className="block mb-1 text-xs font-medium text-body" htmlFor="newActivity-starterCode">
+                            Starter code
+                          </label>
+                          <div className='w-full h-36 max-h-36'>
+                            <textarea id="newActivity-starterCode" {...register("starterCode", { shouldUnregister: true })} className="w-full h-full px-2 py-1 font-mono text-sm border rounded resize-none border-light-300" />
+                          </div>
+                        </div>
+                        <div className="relative w-full">
+                          <label className="block mb-1 text-xs font-medium text-body" htmlFor="newActivity-answer">
+                            Expected result
+                          </label>
+                          <div className='w-full h-36 max-h-36'>
+                            <textarea id="newActivity-answer" {...register("correctAnswer", { shouldUnregister: true })} className="w-full h-full px-2 py-1 font-mono text-sm border rounded resize-none border-light-300" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative mt-3">
                         <Controller
                           defaultValue="python"
                           control={control}
@@ -150,9 +165,6 @@ const AddActivityView: FC<IProps> = ({ handleCloseModal, handleDescription, desc
                             )
                           }
                         />
-                      </div>
-                      <div id="newActivity-starterCode" className="relative h-28 max-h-36">
-                        <textarea {...register("starterCode", { shouldUnregister: true })} className="w-full h-full px-2 py-1 font-mono text-sm border rounded resize-none border-light-300" />
                       </div>
                     </div>
 

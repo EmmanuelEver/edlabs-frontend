@@ -55,7 +55,9 @@ export interface ISection {
     activities: IActivitySummary[];
     submittedActivities: number;
     isOnline: boolean; 
-    teacher?: any
+    teacher?: any;
+    description?: string;
+    coverImage?: string;
 }
 
 export interface IStudent {

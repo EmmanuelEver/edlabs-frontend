@@ -28,7 +28,7 @@ const HeaderNavigation = () => {
         <Menu>
             <div className="relative">
                 <Menu.Button>
-                    <Avatar name={user?.name} image={user?.profileUrl} wrapperClassName="cursor-pointer" />
+                    <Avatar name={user?.name} image={user?.profileUrl} wrapperClassName="cursor-pointer !w-10 !h-10" />
                 </Menu.Button>
                 <Transition
                     as={Fragment}

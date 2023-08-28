@@ -1,6 +1,7 @@
 import { ROLES } from "@/types/types"
 import { FC, PropsWithChildren } from "react"
 import Header from "../header/Header";
+import Navbar from "../navbar/Navbar";
 import MainSidebar from "../sidebar/MainSidebar"
 
 interface IProps extends PropsWithChildren {
@@ -10,12 +11,9 @@ interface IProps extends PropsWithChildren {
 
 const MainLayout: FC <IProps> = ({children, role="STUDENT", pageTitle}) => {
   return (
-    <div className="w-screen h-screen flex flex-nowrap">
-        <MainSidebar role={role} />
-        <section className="flex-1 bg-light-200 flex-col flex overflow-hidden">
-            {
-              !!pageTitle && <Header pageTitle={pageTitle} />
-            }
+    <div className="flex flex-col w-screen h-screen flex-nowrap">
+        <Navbar role={role} />
+        <section className="flex flex-col flex-1 overflow-hidden bg-light-400">
             <main className="flex-1 overflow-hidden">
               {children}
             </main>
