@@ -18,7 +18,7 @@ interface IProps {
 const CreateSectionView: FC<IProps> = ({handleCreateSection, showCreateModal, handleSubmit, onSubmit, register, isDirty, isSubmitting, errors}) => {
   return (
     <>
-        <button onClick={() => handleCreateSection(true)} className="flex ml-auto text-sm leading-none text-light-100 items-center font-medium justify-center rounded py-2.5 transition-colors px-4 bg-dark-header hover:text-header hover:bg-accentColor-200">
+        <button onClick={() => handleCreateSection(true)} className="flex ml-auto text-sm leading-none text-light-100 items-center font-medium justify-center rounded py-2.5 transition-colors px-4 bg-blue-300 hover:text-header hover:bg-accentColor-200">
             <PlusIcon className="w-4 h-4"/>
             <span className="ml-1">Create section</span>
         </button>

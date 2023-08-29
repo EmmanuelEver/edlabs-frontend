@@ -13,8 +13,8 @@ interface IProps {
 const ActivityCardView: FC<IProps> = ({activity}) => {
   return (
     <ActivityCard>
-        <h3 title={activity.title} className="text-header text-base font-bold">{activity.title}</h3>
-        <p className="mt-4 text-sm text-body"> <span className="font-bold text-subHeader ml-1">{dayjs(activity.closeDate).format("LLLL")}</span></p>
+        <h3 title={activity.title} className="text-base font-bold text-blue-300">{activity.title}</h3>
+        <p className="mt-4 text-sm text-body"> <span className="ml-1 font-bold text-subHeader">{dayjs(activity.closeDate).format("LLLL")}</span></p>
     </ActivityCard>
   )
 }

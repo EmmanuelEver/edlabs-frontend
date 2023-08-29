@@ -1,21 +1,31 @@
+import { Transition } from "@headlessui/react";
 import { FC, Fragment } from "react"
 import OutputsAllContainer from "./parts/outputsAll/OutputsAllContainer";
 import OutputsByActivityContainer from "./parts/outputsByActivity/OutputsByActivityContainer";
+import OutputSectionContainer from "./parts/outputSection/OutputSectionContainer";
 
 interface IProps {
     showOutputByActivity: any;
 }
 
-const OutputsView:FC<IProps> = ({ showOutputByActivity}) => {
-  return (
-    <div className="relative w-full h-full p-6 overflow-hidden">
-        {
-            showOutputByActivity ?
-            <OutputsByActivityContainer />
-            :
+const OutputsView: FC<IProps> = ({ showOutputByActivity }) => {
+    return (
+        <div className="relative flex w-full h-full overflow-hidden flex-nowrap">
             <OutputsAllContainer />
-        }
-        {/* <div className="w-full h-full overflow-y-auto">
+
+            <Transition
+                className="w-full h-full"
+                show={!!showOutputByActivity}
+                enter='transform transition ease-in-out duration-500 sm:duration-700'
+                enterFrom='translate-x-full'
+                enterTo='translate-x-0'
+                leave='transform transition ease-in-out duration-500 sm:duration-700'
+                leaveFrom='translate-x-0'
+                leaveTo='translate-x-full'
+            >
+                <OutputSectionContainer />
+            </Transition>
+            {/* <div className="w-full h-full overflow-y-auto">
             {
             data?.map((section: any, idx: number) => (
                 <Fragment key={section.shortcode + idx}>
@@ -76,8 +86,8 @@ const OutputsView:FC<IProps> = ({ showOutputByActivity}) => {
             ))
         }
         </div> */}
-    </div>
-  )
+        </div>
+    )
 }
 
 export default OutputsView

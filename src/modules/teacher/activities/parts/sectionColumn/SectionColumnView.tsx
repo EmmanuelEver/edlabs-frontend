@@ -38,17 +38,17 @@ const SectionActivitiesView: FC<IProps> = ({activities, sectionName, sectionId, 
                   activities?.map(activity => (
                       <Link href={`/activities?selected=${activity.id}`} key={activity.id}>
                         <ActivityCard>
-                          <h3 title={activity.title} className="text-base font-bold whitespace-normal text-header">{activity.title}</h3>
-                          <p title={activity.shortDescription} className="w-full mt-2 text-sm text-body text-overflow-clamp">{activity.shortDescription}</p>
+                          <h3 title={activity.title} className="text-base font-bold text-blue-300 whitespace-normal">{activity.title}</h3>
+                          <p title={activity.shortDescription} className="w-full mt-2 text-sm text-subHeader text-opacity-70 text-overflow-clamp">{activity.shortDescription}</p>
                           {/* <div className="flex items-center mt-4 text-sm text-body"> 
                             <CalendarDaysIcon className="w-5 h-5" />
                             <p className="ml-1 font-medium text-header">{ dayjs(activity.createdAt).format("LLLL")}</p>
                           </div> */}
                           {
                             activity?.sessions.length > 0 &&
-                            <div className="flex items-center mt-4 text-sm text-body"> 
+                            <div className="flex items-center mt-4 text-sm text-subHeader text-opacity-70"> 
                               <DocumentDuplicateIcon className="w-5 h-5" />
-                              <Link href={`/outputs?activityId=${activity.id}`} className="ml-1 font-medium hover:underline text-header">View student outputs</Link>
+                              <Link href={`/outputs?activityId=${activity.id}`} className="ml-1 font-medium hover:underline text-subHeader text-opacity-70">View student outputs</Link>
                             </div>
                           }
                         </ActivityCard>

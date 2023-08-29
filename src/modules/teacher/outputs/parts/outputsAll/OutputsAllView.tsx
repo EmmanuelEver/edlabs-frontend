@@ -1,6 +1,7 @@
 import Avatar from "@/components/avatar/Avatar"
 import LoadingComponent from "@/components/loader/LoadingComponent";
 import clsx from "clsx";
+import Image from "next/image";
 import Link from "next/link"
 import { FC, Fragment } from "react"
 
@@ -9,12 +10,12 @@ interface IProps {
     isLoading: boolean;
 }
 
-const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
+const OutputsAllView: FC<IProps> = ({ data, isLoading }) => {
     function getEqScore(sessions: any, sectionId: string) {
         const sectionSessions = sessions?.filter((session: any) => session.activity.sectionId === sectionId)
-        
+
         const sectionSessionsSocre = sectionSessions.reduce((a: number, session: any) => {
-            if(!isNaN(session.eqScore)) {
+            if (!isNaN(session.eqScore)) {
                 return a + session.eqScore
             }
             return a
@@ -24,7 +25,7 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
     }
     function getGeqs(sessions: any) {
         const sectionSessionsSocre = sessions.reduce((a: number, session: any) => {
-            if(!isNaN(session.eqScore)) {
+            if (!isNaN(session.eqScore)) {
                 return a + session.eqScore
             }
             return a
@@ -34,26 +35,60 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
         return eqScore
     }
 
+    function getSectionAverageEqs(section: any) {
+        const sessions = section?.students?.map(student => student?.activitySessions?.reduce((a,b) => {
+            if(Number.isFinite(b.eqScore)) return a += b.eqScore
+            return a
+        } , 0) / student?.activitySessions?.length)
+        return (sessions.reduce((a, b) => a += b, 0) / sessions.length)
+    }
+
+    function getGreenToRed(percent){
+        let r = percent<50 ? 255 : Math.floor(255-(percent*2-100)*255/100);
+        let g = percent>50 ? 255 : Math.floor((percent*2)*255/100);
+        return 'rgb('+g+','+r+',0)';
+    }
+
     function sortStudents(students: any[], sectionId: string) {
         try {
-            return students.sort((a:any, b:any) => {
+            return students.sort((a: any, b: any) => {
                 return parseFloat(getEqScore(b.activitySessions, sectionId)) - parseFloat(getEqScore(a.activitySessions, sectionId))
             })
         } catch (error) {
             return students
         }
     }
-
     return (
-        <div className="w-full h-full overflow-y-auto">
-        {
-            isLoading && <LoadingComponent />
-        }
+        <div className="flex flex-col flex-shrink-0 w-5/12 h-full px-6 py-6">
             {
-                data?.map((section: any, idx: number) => (
-                    <Fragment key={section.shortcode + idx}>
-                        <div className={clsx("flex w-full pb-6 px-10 pt-14 first-of-type:mt-0 flex-nowrap", idx%2 === 0 ? "" : "bg-light-100")}>
-                            <div className="flex-shrink-0 w-full max-w-xs">
+                isLoading && <LoadingComponent />
+            }
+            <div className="flex-shrink-0">
+                <h1 className="text-2xl font-semibold text-header">Sections</h1>
+            </div>
+
+            <div className="flex-1 w-full mt-6 overflow-y-auto ">
+                <ul className="flex flex-col w-full gap-4 list-none">
+                    {
+                        data?.map((section: any, idx: number) => (
+                            <Fragment key={section.shortcode + idx}>
+                                <li role="button" key={section.id} className="cursor-pointer">
+                                    <Link href={`/outputs/?sectionId=${section.id}`} className="rounded pl-4 pb-4 w-full min-h-[100px] flex flex-nowrap bg-light-100 pt-4 shadow-md hover:shadow-lg transition-shadow">
+                                        <div className="flex-shrink-0 max-w-[150px] bg-accentColor-200 max-h-[150px]">
+                                            <Image style={{ objectFit: "cover", width: "100%", height: "100%" }} alt="" src={section?.coverImage} width={360} height={240} />
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="p-4 ">
+                                                <h3 className="text-base font-semibold text-blue-300 ">{section.title}</h3>
+                                                <p className="mt-4 text-sm font-medium text-subHeader text-opacity-70">{section.description}</p>
+                                            </div>
+                                            <div className="inline-block float-right p-2 mx-4 text-xs rounded bg-opacity-30 bg-slate-300 text-subHeader text-opacity-70">
+                                                <span style={{color: getGreenToRed(getSectionAverageEqs(section))}}>{getSectionAverageEqs(section)?.toFixed(3)}</span> <span className="mx-1 font-bold">&#183;</span>{section?.activities?.length} Activities
+                                            </div>
+                                        </div>
+                                    </Link>
+
+                                    {/* <div className="flex-shrink-0 w-full max-w-xs">
                                 <h3 className="font-medium leading-none text-md text-header">{section?.title} <span className="ml-2">({section.shortcode})</span></h3>
                                 <p className="mt-2 text-sm text-subHeader">{section.description}</p>
                                 {
@@ -111,11 +146,13 @@ const OutputsAllView :FC<IProps> = ({data, isLoading}) => {
                                         }
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                    </Fragment>
-                ))
-            }
+                            </div> */}
+                                </li>
+                            </Fragment>
+                        ))
+                    }
+                </ul>
+            </div>
         </div>
     )
 }

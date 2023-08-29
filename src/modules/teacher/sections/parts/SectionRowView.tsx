@@ -18,7 +18,7 @@ const SectionRowView: FC <IProps> = ({section, handleSelectSection, oddRow, dele
         <td colSpan={3} className="pt-2 pb-2 pl-4">
             <div className="flex items-center">
                 <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full bg-accentColor-200">
-                    <BookOpenIcon className="w-3 h-3" />
+                    <BookOpenIcon className="w-3 h-3 text-blue-300" />
                 </div>
                 <div role="button" onClick={() => handleSelectSection(section.id)} className="ml-4 text-xs font-medium cursor-pointer text-header hover:underline">
                     {/* TODO: link to section */}
