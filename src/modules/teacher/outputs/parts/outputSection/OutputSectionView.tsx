@@ -92,23 +92,22 @@ const OutputSectionView = ({ section }) => {
             <UserGroupIcon className="w-5 h-5" />
           </div>
         </div>
-        <ul className="flex flex-col flex-1 w-full gap-2 mt-6 overflow-y-auto">
+        <ul className="flex flex-col flex-1 w-full gap-2 mt-4 overflow-y-auto">
           {
             sortStudents(section?.students, section?.id)?.map((student, idx) => (
               <li key={student.id} className={clsx("w-full rounded-3xl py-4 px-4  flex items-center justify-between", idx % 2 !== 0 ? "bg-light-400" : "bg-transparent")}>
                 <div className="flex items-center gap-2">
                   <Avatar name={student.user.name} image={student?.user?.profileUrl} />
-                  <h4 className="text-sm font-medium text-blue-300">
+                  <h4 className="text-base font-medium text-blue-300">
                     <Link href={`/outputs/${student.user.id}`} className="hover:underline">
                       {student.user.name}
                     </Link>
                   </h4>
                 </div>
-                <div className="text-sm font-normal text-blue-300 text-opacity-70 ">{getEqScore(student?.activitySessions, section.id)}</div>
-
-                <div className="pr-6">
+                <div className="flex items-center pl-6">
+                  <div className="pr-20 text-base font-normal text-blue-300 text-opacity-70 ">{getEqScore(student?.activitySessions, section.id)}</div>
                   <Tooltip content="Output">
-                    <Link href="">
+                    <Link href={`/outputs/${student.user.id}`}>
                       <DocumentChartBarIcon className="w-6 h-6 text-blue-300" />
                     </Link>
                   </Tooltip>

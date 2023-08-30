@@ -46,7 +46,7 @@ const Navbar: FC<IProps> = ({ role }) => {
                                 <Link className="py-2" href="/outputs">
                                     Outputs
                                 </Link>
-                                <div className={clsx("absolute bottom-0 left-0 w-full h-1 transition-all", activePath === "/outputs" ? "bg-light-100" : "bg-transparent")}></div>
+                                <div className={clsx("absolute bottom-0 left-0 w-full h-1 transition-all", activePath.startsWith("/outputs") ? "bg-light-100" : "bg-transparent")}></div>
                             </li>
                     }
                     {
