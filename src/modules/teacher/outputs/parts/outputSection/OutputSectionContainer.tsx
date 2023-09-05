@@ -13,6 +13,9 @@ const OutputSectionContainer = () => {
         }
         return null
     }, [router.query, data])
+    useEffect(() => {
+        console.log(section)
+    }, [section])
     return (
         <OutputSectionView section={section} />
     )
