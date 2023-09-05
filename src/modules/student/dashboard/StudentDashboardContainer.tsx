@@ -4,6 +4,7 @@ import StudentDashboardView from "./StudentDashboardView"
 
 const StudentDashboard = () => {
   const {data, isLoading} = useFetch("/dashboard")
+  const {data: recentActivities, isLoading: recentActivitiesLoading} = useFetch("/dashboard/recent-activities")
   const { user, isAuthenticating } = useAppStore((state) => ({
     user: state.user,
     isAuthenticating: state.isAuthenticating,

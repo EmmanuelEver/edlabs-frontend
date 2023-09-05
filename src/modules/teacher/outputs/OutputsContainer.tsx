@@ -7,7 +7,8 @@ const OutputsContainer = () => {
 
     return (
     <OutputsView
-        showOutputByActivity={router.query.sectionId || ""}
+        showOutputBySection={router.query.sectionId || ""}
+        showOutputByActivity={router.query.activityId || ""}
     />
   )
 }
